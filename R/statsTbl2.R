@@ -1,3 +1,10 @@
+library(here)
+i_am(
+  "R/statsTbl2.R"
+)
+
+
+
 #' Gather results of quadratic regression w/o assumption or generalized check/options
 #'
 #' @param ...nestedVarDataTbl
@@ -32,7 +39,7 @@ getStatsTbl2 <- function(
 #'
 #' @return
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 addStatEval2 <- function(
   ...statFitTbl2,
@@ -107,7 +114,7 @@ addStatEval2 <- function(
 #'
 #' @return mutated tbl
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 addGraph2 <- function(
   ...statEvalNonTbl2,

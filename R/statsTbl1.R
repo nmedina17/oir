@@ -1,3 +1,10 @@
+library(here)
+i_am(
+  "R/statsTbl1.R"
+)
+
+
+
 #' Gather results, for already-summarized data, of basic regression, assumptions checks and generalized options
 #'
 #' @param ...nestedVarDataTbl

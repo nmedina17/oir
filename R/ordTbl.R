@@ -1,3 +1,7 @@
+library(here)
+i_am(
+  "R/ordTbl.R"
+)
 #ordinate
 
 #' Organize ordination attributes into plot-able tibble
@@ -7,7 +11,7 @@
 #'
 #' @return tibble of coordinates and sample attributes
 #' @export
-#'
+#' @import tidyverse, vegan
 #' @examples
 getOrdVarTbl <- function(
   ...commTbl,

@@ -1,4 +1,7 @@
 library(here);
+i_am(
+  "R/statsTbl.R"
+)
 # source(
 #   here("analysis/stats.R")
 # ) #...$varData
@@ -20,7 +23,7 @@ library(ggpubr) #ggarrange()
 #'
 #' @return large tibble
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 getStatsTbl <- function(
   #has"varData"col
@@ -61,7 +64,7 @@ getStatsTbl <- function(
 #'
 #' @return mutated tbl
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 statFitTbl <- function(
   ...nestedVarDataTbl,
@@ -107,7 +110,7 @@ statFitTbl <- function(
 #'
 #' @return mutated tbl
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 addStatEval <- function(
   ...statFitTbl,
@@ -287,7 +290,7 @@ addStatEval <- function(
 #'
 #' @return mutated tbl
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 addStatFitNon <- function(
   ...statEvalTbl,
@@ -351,7 +354,7 @@ addStatFitNon <- function(
 #'
 #' @return mutated tbl
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 addStatEvalNon <- function(
   ...statFitNonTbl
@@ -452,7 +455,7 @@ addStatEvalNon <- function(
 #'
 #' @return mutated tbl
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 addStatFitNonNP <- function(
   ...statEvalTbl,
@@ -489,7 +492,7 @@ addStatFitNonNP <- function(
 #'
 #' @return mutated tbl
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 addGraph <- function(
   ...statEvalNonTbl,

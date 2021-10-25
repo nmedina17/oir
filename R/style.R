@@ -2,6 +2,9 @@ library(tidyverse)
 #geom_quasirandom()
 library(ggbeeswarm)
 library(here)
+i_am(
+  "R/style.R"
+)
 # source(
 #   here(
 #     "analysis/statsTbl.R"
@@ -21,6 +24,21 @@ theme_set(
 )
 
 
+#' Sets cleaner ggplot style
+#'
+#' @param ..varData
+#' @param ..var
+#' @param ..x
+#' @param ..y
+#' @param ..xlab
+#' @param ..ylab
+#' @param ..addGroups
+#' @param ..cleanData
+#'
+#' @return
+#' @export
+#' @import tidyverse
+#' @examples
 dotGraph <- function(
   ..varData,
   # $variable

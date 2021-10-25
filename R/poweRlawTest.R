@@ -1,3 +1,7 @@
+library(here)
+i_am(
+  "R/powerLawTest.R"
+)
 library(poweRlaw)
 #replaces_broom::
 #bootstrap::
@@ -11,7 +15,7 @@ library(poweRlaw)
 #'
 #' @return "results" data frame
 #' @export
-#'
+#' @import poweRlaw
 #' @examples
 CheckPoweRlaw <- function(
   RealFreq
