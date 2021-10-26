@@ -1,6 +1,6 @@
 library(here)
 i_am(
-  "R/powerLawTest.R"
+  "R/poweRLawTest.R"
 )
 library(poweRlaw)
 #replaces_broom::

@@ -2,7 +2,7 @@
 % Please edit documentation in R/style.R
 \name{dotGraph}
 \alias{dotGraph}
-\title{Sets cleaner ggplot style}
+\title{Sets cleaner ggplot style, scatter default}
 \usage{
 dotGraph(
   ..varData,
@@ -22,5 +22,5 @@ dotGraph(
 
 }
 \description{
-Sets cleaner ggplot style
+Sets cleaner ggplot style, scatter default
 }

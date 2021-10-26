@@ -24,7 +24,7 @@ theme_set(
 )
 
 
-#' Sets cleaner ggplot style
+#' Sets cleaner ggplot style, scatter default
 #'
 #' @param ..varData
 #' @param ..var
