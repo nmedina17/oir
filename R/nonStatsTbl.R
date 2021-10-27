@@ -82,90 +82,108 @@ addStatEvalNon <- function(
   ...statFitNonTbl
 ) {
 
-  ...statFitNonTbl %>%
+    ...statFitNonTbl %>%
 
-    #getvals
-    mutate(
-      poisAIC =
-        statTestPois %>%
-        modify_if(
-          !isModelOK &
-            !is.na(
-              isModelOK
-            ),
-          ~ .x$
-            aic
-        ),
-      gammaAIC =
-        statTestGamma %>%
-        modify_if(
-          !isModelOK &
-            !is.na(
-              isModelOK
-            ),
-          ~ .x$
-            aic
-        ),
-      poisPval =
-        statTestPois %>%
-        modify_if(
-          !isModelOK &
-            !is.na(
-              isModelOK
-            ),
-          ~ .x$
-            coefficients[8]
-        ),
-      gammaPval =
-        statTestGamma %>%
-        modify_if(
-          !isModelOK &
-            !is.na(
-              isModelOK
-            ),
-          ~ .x$
-            coefficients[8]
-        )
-    ) %>%
-    unnest(
-      c(
-        poisAIC,
-        gammaAIC,
-        poisPval,
-        gammaPval
-      )
-    ) %>%
-
-    #eval
-    mutate(
-      "pickAIC" =
-        pmin(
-          poisAIC,
-          gammaAIC
-        )
-    ) %>%
-    unnest(
-      pickAIC
-    ) %>%
-    mutate(
-      #morefamilies?
-      "pickPval" =
-        ifelse(
-          pickAIC == poisAIC,
-          poisPval,
-          if_else(
-            pickAIC == gammaAIC,
-            gammaPval,
-            9
+      #getvals
+      mutate(
+        poisAIC =
+          statTestPois %>%
+          modify_if(
+            !isModelOK &
+              !is.na(
+                isModelOK
+              ),
+            ~ .x %>%
+              as_tibble() %>%
+              pull(
+                aic
+              ),
+            ~ NA,
+          ),
+        gammaAIC =
+          statTestGamma %>%
+          modify_if(
+            !isModelOK &
+              !is.na(
+                isModelOK
+              ),
+            ~ .x %>%
+              as_tibble() %>%
+              pull(
+                aic
+              ),
+            ~ NA,
+          ),
+        poisPval =
+          statTestPois %>%
+          modify_if(
+            !isModelOK &
+              !is.na(
+                isModelOK
+              ),
+            ~ .x %>%
+              as_tibble() %>%
+              pull(
+                coefficients[8]
+              ),
+            ~ NA,
+          ),
+        gammaPval =
+          statTestGamma %>%
+          modify_if(
+            !isModelOK &
+              !is.na(
+                isModelOK
+              ),
+            ~ .x %>%
+              as_tibble() %>%
+              pull(
+                coefficients[8]
+              ),
+            ~ NA,
           )
+      ) %>%
+
+      unnest(
+        c(
+          poisAIC,
+          gammaAIC,
+          poisPval,
+          gammaPval
         ),
-      "isSignif9" =
-        if_else(
-          pickPval <
-            0.105,
-          T, F
-        )
-    )
+        names_repair = "unique"
+      ) %>%
+
+      #eval
+      mutate(
+        "pickAIC" =
+          pmin(
+            poisAIC,
+            gammaAIC
+          )
+      ) %>%
+      unnest(
+        pickAIC
+      ) %>%
+      mutate(
+        #morefamilies?
+        "pickPval" =
+          ifelse(
+            pickAIC == poisAIC,
+            poisPval,
+            if_else(
+              pickAIC == gammaAIC,
+              gammaPval,
+              9
+            )
+          ),
+        "isSignif9" =
+          if_else(
+            pickPval <
+              0.105,
+            T, F
+          )
+      )
 }
 
 

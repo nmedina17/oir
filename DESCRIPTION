@@ -17,10 +17,24 @@ Imports:
     ggpmisc,
     glue,
     here,
+    magrittr,
     poweRlaw,
     rpart,
     rstatix,
     survival,
     vegan
 Depends: 
-    tidyverse
+    tidyverse,
+    class,
+    dplyr,
+    ggbeeswarm,
+    ggplot2,
+    ggpmisc,
+    glue,
+    here,
+    magrittr,
+    poweRlaw,
+    rpart,
+    rstatix,
+    survival,
+    vegan

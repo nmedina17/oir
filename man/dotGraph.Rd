@@ -19,7 +19,7 @@ dotGraph(
 \item{..cleanData}{}
 }
 \value{
-
+scatter ggplot
 }
 \description{
 Sets cleaner ggplot style, scatter default

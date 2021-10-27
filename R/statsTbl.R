@@ -125,7 +125,9 @@ addStatEval <- function(
         modify(
           ~ .x %>%
             residuals() %>%
-            shapiro_test()
+            shapiro_test() %>%
+            #test
+            tidy()
         ),
       #OGdata
       varyTest =

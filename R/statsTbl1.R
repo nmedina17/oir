@@ -12,7 +12,7 @@ i_am(
 #'
 #' @return large tibble
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 getStatsTbl1 <- function(
   #has"varData1"col
@@ -51,7 +51,7 @@ getStatsTbl1 <- function(
 #'
 #' @return mutated tbl
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 statFitTbl1 <- function(
   ...nestedVarDataTbl,
@@ -97,7 +97,7 @@ statFitTbl1 <- function(
 #'
 #' @return mutated tbl
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 addGraph1 <- function(
   ...statEvalNonTbl,

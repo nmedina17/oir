@@ -19,9 +19,6 @@ style <- theme_bw() +
   theme()
 #dark?
 
-theme_set(
-  style
-)
 
 
 #' Sets cleaner ggplot style, scatter default
@@ -35,7 +32,7 @@ theme_set(
 #' @param ..addGroups
 #' @param ..cleanData
 #'
-#' @return
+#' @return scatter ggplot
 #' @export
 #' @import tidyverse
 #' @examples
@@ -54,6 +51,11 @@ dotGraph <- function(
   ..addGroups = F,
   ..cleanData = NULL
 ) {
+
+  theme_set(
+    style
+  )
+
 
   graph <- ..varData %>%
 

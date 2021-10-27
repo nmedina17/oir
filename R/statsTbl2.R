@@ -12,7 +12,7 @@ i_am(
 #'
 #' @return large tibble
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 getStatsTbl2 <- function(
   ...nestedVarDataTbl,
