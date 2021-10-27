@@ -26,8 +26,8 @@ addStatFitNon <- function(
 
     mutate(
       "statTestPois" =
-        varData %>%
         modify_if(
+          varData,
           !isModelOK &
             !is.na(
               isModelOK
@@ -41,12 +41,13 @@ addStatFitNon <- function(
               family = poisson()
             ) %>%
             summary(),
-          #7digits2replaceNA
-          ~ 9999999
+          #replaceNA
+          ~ 9999999 %>%
+            as_tibble_col()
         ),
       "statTestGamma" =
-        varData %>%
         modify_if(
+          varData,
           !isModelOK &
             !is.na(
               isModelOK
@@ -62,8 +63,9 @@ addStatFitNon <- function(
               )
             ) %>%
             summary(),
-          #7digits2replaceNA
-          ~ 9999999
+          #replaceNA
+          ~ 9999999 %>%
+            as_tibble_col()
         )
     )
 }
@@ -98,7 +100,8 @@ addStatEvalNon <- function(
               pull(
                 aic
               ),
-            ~ NA,
+            ~ 2 %>%
+              as_tibble_col(),
           ),
         gammaAIC =
           statTestGamma %>%
@@ -112,7 +115,8 @@ addStatEvalNon <- function(
               pull(
                 aic
               ),
-            ~ NA,
+            ~ 2 %>%
+              as_tibble_col(),
           ),
         poisPval =
           statTestPois %>%
@@ -126,7 +130,8 @@ addStatEvalNon <- function(
               pull(
                 coefficients[8]
               ),
-            ~ NA,
+            ~ 2 %>%
+              as_tibble_col(),
           ),
         gammaPval =
           statTestGamma %>%
@@ -140,18 +145,19 @@ addStatEvalNon <- function(
               pull(
                 coefficients[8]
               ),
-            ~ NA,
+            ~ 2 %>%
+              as_tibble_col()
           )
       ) %>%
 
       unnest(
-        c(
+        cols = c(
           poisAIC,
           gammaAIC,
           poisPval,
           gammaPval
         ),
-        names_repair = "unique"
+        #names_repair = "unique"
       ) %>%
 
       #eval

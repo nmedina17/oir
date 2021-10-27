@@ -11,7 +11,10 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Imports: 
     class,
+    doParallel,
     dplyr,
+    furrr,
+    future,
     ggbeeswarm,
     ggplot2,
     ggpmisc,
@@ -24,17 +27,4 @@ Imports:
     survival,
     vegan
 Depends: 
-    tidyverse,
-    class,
-    dplyr,
-    ggbeeswarm,
-    ggplot2,
-    ggpmisc,
-    glue,
-    here,
-    magrittr,
-    poweRlaw,
-    rpart,
-    rstatix,
-    survival,
-    vegan
+    tidyverse

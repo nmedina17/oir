@@ -33,7 +33,7 @@ library(
 #'
 #' @return tbl
 #' @export
-#' @import tidyverse
+#' @import tidyverse, furrr, doParallel, future
 #' @examples
 runFits <- function(
   ...nestedTbl
