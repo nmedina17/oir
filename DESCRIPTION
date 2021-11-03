@@ -16,15 +16,21 @@ Imports:
     furrr,
     future,
     ggbeeswarm,
+    gginnards,
     ggplot2,
     ggpmisc,
+    ggpubr,
     glue,
     here,
+    lmerTest,
     magrittr,
     poweRlaw,
+    R.cache,
     rpart,
     rstatix,
     survival,
+    tictoc,
     vegan
 Depends: 
-    tidyverse
+    tidyverse,
+    tidymodels

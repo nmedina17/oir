@@ -22,52 +22,57 @@ addStatFitNon <- function(
   ....formula
 ) {
 
-  ...statEvalTbl %>%
+   mutate(
+     ...statEvalTbl,
 
-    mutate(
-      "statTestPois" =
-        modify_if(
-          varData,
-          !isModelOK &
-            !is.na(
-              isModelOK
-            ) &
-            length(
-              ....formula[[3]]
-            ) == 1,
-          ~ .x %>%
-            glm(
-              formula = ....formula,
-              family = poisson()
-            ) %>%
-            summary(),
-          #replaceNA
-          ~ 9999999 %>%
-            as_tibble_col()
-        ),
-      "statTestGamma" =
-        modify_if(
-          varData,
-          !isModelOK &
-            !is.na(
-              isModelOK
-            ) &
-            length(
-              ....formula[[3]]
-            ) == 1,
-          ~ .x %>%
-            glm(
-              formula = ....formula,
-              family = Gamma(
-                link = "log"
-              )
-            ) %>%
-            summary(),
-          #replaceNA
-          ~ 9999999 %>%
-            as_tibble_col()
-        )
-    )
+    "statTestPois" =
+      modify_if(
+        varData,
+        !isModelOK &
+          !is.na(
+            isModelOK
+          ) &
+          length(
+            ....formula[[3]]
+          ) == 1,
+        ~ .x %>%
+          glm(
+            formula = ....formula,
+            family = poisson()
+          ) %>%
+          summary(),
+        #replaceNA
+        .else = ~ 9999999 %>%
+          as_tibble_col(
+            "statTestPois"
+          )
+      ),
+    "statTestGamma" =
+      modify_if(
+        varData,
+        !isModelOK &
+          !is.na(
+            isModelOK
+          ) &
+          length(
+            ....formula[[3]]
+          ) == 1,
+        ~ .x %>%
+          glm(
+            formula = ....formula,
+            family = Gamma(
+              link = "log"
+            )
+          ) %>%
+          summary(),
+        #replaceNA
+        .else = ~ 9999999 %>%
+          as_tibble_col(
+            "statTestGamma"
+          )
+      ),
+    # .keep = "used"
+  )
 }
 
 
@@ -101,7 +106,7 @@ addStatEvalNon <- function(
                 aic
               ),
             ~ 2 %>%
-              as_tibble_col(),
+              as_tibble(),
           ),
         gammaAIC =
           statTestGamma %>%
@@ -116,7 +121,7 @@ addStatEvalNon <- function(
                 aic
               ),
             ~ 2 %>%
-              as_tibble_col(),
+              as_tibble(),
           ),
         poisPval =
           statTestPois %>%
@@ -131,7 +136,7 @@ addStatEvalNon <- function(
                 coefficients[8]
               ),
             ~ 2 %>%
-              as_tibble_col(),
+              as_tibble(),
           ),
         gammaPval =
           statTestGamma %>%
@@ -146,26 +151,36 @@ addStatEvalNon <- function(
                 coefficients[8]
               ),
             ~ 2 %>%
-              as_tibble_col()
+              as_tibble()
           )
       ) %>%
 
       unnest(
-        cols = c(
-          poisAIC,
-          gammaAIC,
-          poisPval,
-          gammaPval
-        ),
-        #names_repair = "unique"
+        poisAIC
+        # names_repair = "universal"
       ) %>%
+      unnest(
+        gammaAIC
+        # names_repair = "universal"
+      ) %>%
+      unnest(
+        poisPval
+        # names_repair = "universal"
+      ) %>%
+      unnest(
+        gammaPval
+        # names_repair = "universal"
+      ) %>%
+
+      #names_repair = "unique"
 
       #eval
       mutate(
         "pickAIC" =
           pmin(
             poisAIC,
-            gammaAIC
+            gammaAIC,
+            na.rm = T
           )
       ) %>%
       unnest(

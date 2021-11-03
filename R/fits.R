@@ -14,7 +14,7 @@ library(
   poweRlaw
 )
 library(
-  "tictoc"
+  tictoc
 )
 
 #parallel--CheckPowerLaw()
