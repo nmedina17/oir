@@ -42,7 +42,10 @@ addStatFitNon <- function(
           ) %>%
           summary(),
         #replaceNA
-        .else = ~ 9999999
+        .else = ~ as_tibble_col(
+          9999999,
+          "aic"
+        )
       ),
     "statTestGamma" =
       modify_if(
@@ -63,7 +66,10 @@ addStatFitNon <- function(
           ) %>%
           summary(),
         #replaceNA
-        .else = ~ 9999999
+        .else = ~ as_tibble_col(
+          9999999,
+          "aic"
+        )
       ),
     # .keep = "used"
   )
@@ -99,8 +105,7 @@ addStatEvalNon <- function(
               pull(
                 aic
               ),
-            ~ 2 %>%
-              as_tibble(),
+            .else = ~ 2,
           ),
         gammaAIC =
           statTestGamma %>%
@@ -114,8 +119,7 @@ addStatEvalNon <- function(
               pull(
                 aic
               ),
-            ~ 2 %>%
-              as_tibble(),
+            .else = ~ 2,
           ),
         poisPval =
           statTestPois %>%
@@ -129,8 +133,7 @@ addStatEvalNon <- function(
               pull(
                 coefficients[8]
               ),
-            ~ 2 %>%
-              as_tibble(),
+            .else = ~ 2,
           ),
         gammaPval =
           statTestGamma %>%
@@ -144,8 +147,7 @@ addStatEvalNon <- function(
               pull(
                 coefficients[8]
               ),
-            ~ 2 %>%
-              as_tibble()
+            .else = ~ 2
           )
       ) %>%
 
