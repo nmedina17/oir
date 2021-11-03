@@ -42,9 +42,9 @@ addStatFitNon <- function(
           ) %>%
           summary(),
         #replaceNA
-        .else = ~ as_tibble_col(
-          9999999,
-          "aic"
+        .else = ~ tibble(
+          "aic" = 9999999,
+          "coefficients" = 999
         )
       ),
     "statTestGamma" =
@@ -66,9 +66,9 @@ addStatFitNon <- function(
           ) %>%
           summary(),
         #replaceNA
-        .else = ~ as_tibble_col(
-          9999999,
-          "aic"
+        .else = ~ tibble(
+          "aic" = 9999999,
+          "coefficients" = 999
         )
       ),
     # .keep = "used"
@@ -128,11 +128,10 @@ addStatEvalNon <- function(
               !is.na(
                 isModelOK
               ),
-            ~ .x %>%
-              as_tibble() %>%
-              pull(
-                coefficients[8]
-              ),
+            ~ .x$
+              coefficients %>%
+              #[8]
+              last(),
             .else = ~ 2,
           ),
         gammaPval =
@@ -142,11 +141,10 @@ addStatEvalNon <- function(
               !is.na(
                 isModelOK
               ),
-            ~ .x %>%
-              as_tibble() %>%
-              pull(
-                coefficients[8]
-              ),
+            ~ .x$
+              coefficients %>%
+              #[8]
+              last(),
             .else = ~ 2
           )
       ) %>%
