@@ -42,10 +42,7 @@ addStatFitNon <- function(
           ) %>%
           summary(),
         #replaceNA
-        .else = ~ 9999999 %>%
-          as_tibble_col(
-            "statTestPois"
-          )
+        .else = ~ 9999999
       ),
     "statTestGamma" =
       modify_if(
@@ -66,10 +63,7 @@ addStatFitNon <- function(
           ) %>%
           summary(),
         #replaceNA
-        .else = ~ 9999999 %>%
-          as_tibble_col(
-            "statTestGamma"
-          )
+        .else = ~ 9999999
       ),
     # .keep = "used"
   )
