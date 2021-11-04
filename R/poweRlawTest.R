@@ -6,6 +6,7 @@ library(poweRlaw)
 #replaces_broom::
 #bootstrap::
 # library(rsample)
+library(parallel)
 
 
 
@@ -23,6 +24,7 @@ CheckPoweRlaw <- function(
   #Clauset2009,Gillespie2015
   #bottleneck==boostrap()
 
+  nthreads <- detectCores()
 
 
   RealFreq <- round(
@@ -41,13 +43,15 @@ CheckPoweRlaw <- function(
   #bottleneck==bootstrap()
   PlVar <- var(
     poweRlaw::bootstrap(
-      Pl
+      Pl,
+      threads = nthreads
     )$bootstraps$pars
   ) #variance
   #plot(Pl)
 
   PlP <- bootstrap_p(
-    Pl
+    Pl,
+    threads = nthreads
   )$p  #>0.1passes
 
 
@@ -62,7 +66,8 @@ CheckPoweRlaw <- function(
 
   ExpVar <- var(
     poweRlaw::bootstrap(
-      Exp
+      Exp,
+      threads = nthreads
     )$bootstraps$pars
   )
 
@@ -78,7 +83,8 @@ CheckPoweRlaw <- function(
 
   PoisVar <- var(
     poweRlaw::bootstrap(
-      Pois
+      Pois,
+      threads = nthreads
     )$bootstraps$pars
   )
 
@@ -93,7 +99,8 @@ CheckPoweRlaw <- function(
   )
 
   LognormVar <- poweRlaw::bootstrap(
-    Lognorm
+    Lognorm,
+    threads = nthreads
   )$bootstraps
   LognormVar1 <- var(
     LognormVar$pars1

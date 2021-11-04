@@ -100,11 +100,8 @@ addStatEvalNon <- function(
               !is.na(
                 isModelOK
               ),
-            ~ .x %>%
-              as_tibble() %>%
-              pull(
-                aic
-              ),
+            ~ .x$
+              aic,
             .else = ~ 2,
           ),
         gammaAIC =
@@ -114,11 +111,8 @@ addStatEvalNon <- function(
               !is.na(
                 isModelOK
               ),
-            ~ .x %>%
-              as_tibble() %>%
-              pull(
-                aic
-              ),
+            ~ .x$
+              aic,
             .else = ~ 2,
           ),
         poisPval =
