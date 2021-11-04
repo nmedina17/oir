@@ -24,7 +24,7 @@ CheckPoweRlaw <- function(
   #Clauset2009,Gillespie2015
   #bottleneck==boostrap()
 
-  nthreads <- detectCores()
+  nCores <- detectCores()
 
 
   RealFreq <- round(
@@ -44,7 +44,7 @@ CheckPoweRlaw <- function(
   PlVar <- var(
     poweRlaw::bootstrap(
       Pl,
-      threads = nthreads
+      threads = nCores
     )$bootstraps$pars
   ) #variance
   #plot(Pl)
@@ -67,7 +67,7 @@ CheckPoweRlaw <- function(
   ExpVar <- var(
     poweRlaw::bootstrap(
       Exp,
-      threads = nthreads
+      threads = nCores
     )$bootstraps$pars
   )
 
@@ -84,7 +84,7 @@ CheckPoweRlaw <- function(
   PoisVar <- var(
     poweRlaw::bootstrap(
       Pois,
-      threads = nthreads
+      threads = nCores
     )$bootstraps$pars
   )
 
@@ -100,7 +100,7 @@ CheckPoweRlaw <- function(
 
   LognormVar <- poweRlaw::bootstrap(
     Lognorm,
-    threads = nthreads
+    threads = nCores
   )$bootstraps
   LognormVar1 <- var(
     LognormVar$pars1

@@ -139,7 +139,9 @@ dotGraph <- function(
             as.double()
 
           ifelse(
-            showP >
+            showP <
+              0.105 &
+              showP >
               0.001,
             round(
               showP,
