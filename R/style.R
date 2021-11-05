@@ -74,7 +74,9 @@ dotGraph <- function(
       modify(
         ~ .x %>%
           group_by(
-            ..useGroups
+            as.factor(
+              ..useGroups
+            )
           )
       )
   }

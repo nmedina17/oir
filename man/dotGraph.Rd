@@ -11,12 +11,15 @@ dotGraph(
   ..y,
   ..xlab,
   ..ylab,
-  ..addGroups = F,
-  ..cleanData = NULL
+  ..addBins = F,
+  ..cleanData = NULL,
+  ..addLines = F,
+  ..log10Axes = F,
+  ..useGroups = NULL
 )
 }
 \arguments{
-\item{..cleanData}{}
+\item{..useGroups}{}
 }
 \value{
 scatter ggplot
