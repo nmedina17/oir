@@ -12,6 +12,7 @@ i_am(
 # )
 library(gginnards)
 #append_layers()
+library(ggpmisc)
 library(glue)
 
 
@@ -29,8 +30,11 @@ style <- theme_bw() +
 #' @param ..y
 #' @param ..xlab
 #' @param ..ylab
-#' @param ..addGroups
 #' @param ..cleanData
+#' @param ..addBins
+#' @param ..addLines
+#' @param ..log10Axes
+#' @param ..useGroups
 #'
 #' @return scatter ggplot
 #' @export
@@ -48,13 +52,32 @@ dotGraph <- function(
   ..y,
   ..xlab,
   ..ylab,
-  ..addGroups = F,
-  ..cleanData = NULL
+  ..addBins = F,
+  ..cleanData = NULL,
+  ..addLines = F,
+  ..log10Axes = F,
+  ..useGroups = NULL
 ) {
 
   theme_set(
     style
   )
+
+
+  if(
+    !is.null(
+      ..useGroups
+    )
+  ) {
+
+    ..varData <- ..varData %>%
+      modify(
+        ~ .x %>%
+          group_by(
+            ..useGroups
+          )
+      )
+  }
 
 
   graph <- ..varData %>%
@@ -139,15 +162,18 @@ dotGraph <- function(
             as.double()
 
           ifelse(
-            showP <
-              0.105 &
-              showP >
-              0.001,
-            round(
-              showP,
-              3
-            ),
-            "< 0.001"
+            showP >
+              0.1055,
+            "> 0.10",
+            ifelse(
+              showP < 0.1055 &
+                showP > 0.001,
+              round(
+                showP,
+                3
+              ),
+              "< 0.001"
+            )
           )
         }
       ),
@@ -193,7 +219,7 @@ dotGraph <- function(
 
 
   graph <- if(
-    ..addGroups == T
+    ..addBins == T
   ) {
 
     graph <- graph +
@@ -219,4 +245,43 @@ dotGraph <- function(
 
     graph
   }
+
+
+  graph <- if(
+    ..log10Axes == T
+  ) {
+
+    graph <- graph +
+
+      scale_y_continuous(
+        trans = "log10"
+      ) +
+      scale_x_continuous(
+        trans = "log10"
+      )
+
+  } else {
+
+    graph
+  }
+
+
+  graph <- if(
+    ..addLines == T
+  ) {
+
+    graph <- graph +
+
+      stat_smooth(
+        se = F,
+        color = "black",
+        size = 1,
+        method = "lm"
+      )
+  } else {
+
+    graph
+  }
+
+
 }

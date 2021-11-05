@@ -2,7 +2,7 @@ library(
   here
 )
 i_am(
-  "R/fits.R"
+  "R/RunFits.R"
 )
 #CheckPowerLaw()
 # source(

@@ -1,10 +1,10 @@
 Package: oir
-Title: What the Package Does (One Line, Title Case)
+Title: Listen for common feedback
 Version: 0.0.0.9000
 Authors@R: 
     person("Nicholas", "Medina", , "nmedina@umich.edu", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: Codifies common stat decision trees, organizes key values, info
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

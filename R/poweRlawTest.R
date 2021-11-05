@@ -51,7 +51,7 @@ CheckPoweRlaw <- function(
 
   PlP <- bootstrap_p(
     Pl,
-    threads = nthreads
+    threads = nCores
   )$p  #>0.1passes
 
 
