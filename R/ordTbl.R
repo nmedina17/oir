@@ -19,11 +19,11 @@ getOrdVarTbl <- function(
 ) {
 
 
-  ord = rda(
+  ord <- rda(
     ...commTbl
   )
 
-  ordTbl = scores(
+  ordTbl <- scores(
     ord
   )$sites %>%
     as_tibble()

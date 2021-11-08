@@ -64,25 +64,7 @@ dotGraph <- function(
   )
 
 
-  if(
-    !is.null(
-      ..useGroups
-    )
-  ) {
-
-    ..varData <- ..varData %>%
-      modify(
-        ~ .x %>%
-          group_by(
-            as.factor(
-              ..useGroups
-            )
-          )
-      )
-  }
-
-
-  graph <- ..varData %>%
+  graphData <- ..varData %>%
 
     filter(
       variable == ..var
@@ -92,29 +74,78 @@ dotGraph <- function(
     ) %>%
     unnest(
       everything()
-    ) %>%
+    )
 
 
-    ggplot(
-      aes(
-        x = {
-          ..x %>%
-            eval()
-        },
-        y = {
-          ..y %>%
-            eval()
-        }
+  graphData <- if(
+    !is_null(
+      ..useGroups
+    )
+  ) {
+    graphData %>%
+      group_by(
+        {{
+          ..useGroups
+        }}
       )
-    ) +
+  } else {
+    graphData
+  }
 
+
+
+  graph <- if(
+    !is_null(
+      ..useGroups
+    )
+  ) {
+    #repeat4sameLine
+      graphData %>%
+
+        ggplot(
+          aes(
+            x = {
+              ..x %>%
+                eval()
+            },
+            y = {
+              ..y %>%
+                eval()
+            },
+
+            shape = {{
+              ..useGroups
+            }}
+          )
+        )
+
+    } else {
+
+      graphData %>%
+
+        ggplot(
+          aes(
+            x = {
+              ..x %>%
+                eval()
+            },
+            y = {
+              ..y %>%
+                eval()
+            }
+          )
+        )
+
+    }
+
+
+  graph <- graph +
     geom_quasirandom(
       color = "black",
       shape = 21,
       fill = "white",
       size = 2
     ) +
-
     labs(
       x = {
         ..xlab %>%
