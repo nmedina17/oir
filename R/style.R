@@ -113,9 +113,7 @@ dotGraph <- function(
                 eval()
             },
 
-            shape = {{
-              ..useGroups
-            }}
+            shape = ..useGroups
           )
         )
 
