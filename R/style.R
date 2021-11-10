@@ -113,7 +113,9 @@ dotGraph <- function(
                 eval()
             },
 
-            shape = ..useGroups
+            color = {{
+              ..useGroups
+            }}
           )
         )
 
@@ -139,7 +141,7 @@ dotGraph <- function(
 
   graph <- graph +
     geom_quasirandom(
-      color = "black",
+      # color = "black",
       shape = 21,
       fill = "white",
       size = 2
