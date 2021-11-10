@@ -108,14 +108,12 @@ dotGraph <- function(
 
         ggplot(
           aes(
-            x = {
-              ..x %>%
-                eval()
-            },
-            y = {
-              ..y %>%
-                eval()
-            },
+            x = {{
+              ..x
+            }},
+            y = {{
+              ..y
+            }},
 
             color = {{
               ..useGroups
@@ -152,14 +150,12 @@ dotGraph <- function(
       size = 2
     ) +
     labs(
-      x = {
-        ..xlab %>%
-          eval()
-        },
-      y = {
-        ..ylab %>%
-          eval()
-      }
+      x = {{
+        ..xlab
+      }},
+      y = {{
+        ..ylab
+      }}
     ) +
 
     annotate(
@@ -242,10 +238,9 @@ dotGraph <- function(
         geom_quasirandom(
           data = ..cleanData,
           aes(
-            y = {
-              ..var %>%
-                eval()
-            }
+            y = {{
+              ..var
+            }}
           ),
           color = "gray",
           size = 1
