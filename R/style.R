@@ -20,6 +20,9 @@ style <- theme_bw() +
   theme()
 #dark?
 
+#pval
+cutoff <- 0.125
+
 
 
 #' Sets cleaner ggplot style, scatter default
@@ -56,7 +59,8 @@ dotGraph <- function(
   ..cleanData = NULL,
   ..addLines = F,
   ..log10Axes = F,
-  ..useGroups = NULL
+  ..useGroups = NULL,
+  ..addCenters = F
 ) {
 
   theme_set(
@@ -140,6 +144,7 @@ dotGraph <- function(
 
 
   graph <- graph +
+
     geom_quasirandom(
       # color = "black",
       shape = 21,
@@ -196,10 +201,10 @@ dotGraph <- function(
 
           ifelse(
             showP >
-              0.1055,
+              cutoff,
             "> 0.10",
             ifelse(
-              showP < 0.1055 &
+              showP < cutoff &
                 showP > 0.001,
               round(
                 showP,
@@ -307,9 +312,25 @@ dotGraph <- function(
 
       stat_smooth(
         se = F,
-        color = "black",
+        # color = "black",
         size = 1,
         method = "lm"
+      )
+  } else {
+
+    graph
+  }
+
+
+  graph <- if(
+    ..addCenters == T
+  ) {
+
+    graph <- graph +
+
+      stat_summary(
+        fun.data = "median_mad",
+        size = 3
       )
   } else {
 
