@@ -347,10 +347,10 @@
     },
     "corrplot": {
       "Package": "corrplot",
-      "Version": "0.90",
+      "Version": "0.92",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "0514bd6a3e99a2a17145c97c1cfebb09"
+      "Hash": "fcf11a91936fd5047b2ee9bc00595e36"
     },
     "covr": {
       "Package": "covr",
@@ -578,10 +578,10 @@
     },
     "gert": {
       "Package": "gert",
-      "Version": "1.4.2",
+      "Version": "1.4.3",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "88765e4d319707aac2bd0f7679c2c51c"
+      "Hash": "3a3f29a74f8bd85ed8d53ab039b18bcd"
     },
     "ggbeeswarm": {
       "Package": "ggbeeswarm",
@@ -1201,10 +1201,10 @@
     },
     "readr": {
       "Package": "readr",
-      "Version": "2.0.2",
+      "Version": "2.1.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "7cb2c3ecfbc2c6786221d2c0c1f6ed68"
+      "Hash": "6c825746f32a68f4d8c40f94da5b1ac5"
     },
     "readxl": {
       "Package": "readxl",
@@ -1306,10 +1306,10 @@
     },
     "rsample": {
       "Package": "rsample",
-      "Version": "0.1.0",
+      "Version": "0.1.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "9e4f4f3b91998715bcc740f88ea328a3"
+      "Hash": "d1ac9b0eedb5dabcec1309e072b169cb"
     },
     "rstatix": {
       "Package": "rstatix",
@@ -1369,10 +1369,10 @@
     },
     "sp": {
       "Package": "sp",
-      "Version": "1.4-5",
+      "Version": "1.4-6",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "dfd843ee98246cf932823acf613b05dd"
+      "Hash": "ce8613f4e8c84ef4da9eba65b874ebe9"
     },
     "splus2R": {
       "Package": "splus2R",
@@ -1537,10 +1537,10 @@
     },
     "vroom": {
       "Package": "vroom",
-      "Version": "1.5.5",
+      "Version": "1.5.6",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "9c3b3a3f947c7936cea7485349247e5b"
+      "Hash": "0af818392e60673cd8968ab9119c30a7"
     },
     "waldo": {
       "Package": "waldo",

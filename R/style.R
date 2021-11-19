@@ -150,12 +150,14 @@ dotGraph <- function(
       size = 2
     ) +
     labs(
-      x = {{
-        ..xlab
-      }},
-      y = {{
-        ..ylab
-      }}
+      x = {
+        ..xlab %>%
+          eval()
+      },
+      y = {
+        ..ylab %>%
+          eval()
+      }
     ) +
 
     annotate(
@@ -325,7 +327,7 @@ dotGraph <- function(
 
       stat_summary(
         fun.data = "median_mad",
-        size = 3
+        size = 1
       )
   } else {
 
