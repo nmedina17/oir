@@ -16,8 +16,18 @@ library(ggpmisc)
 library(glue)
 
 
+fontSize = 12
+# fontFamily = Helvetica
+
 style <- theme_bw() +
-  theme()
+  theme(
+    axis.text = element_text(
+      size = fontSize
+    ),
+    axis.title = element_text(
+      size = fontSize
+    )
+  )
 #dark?
 
 #pval
@@ -60,7 +70,9 @@ dotGraph <- function(
   ..addLines = F,
   ..log10Axes = F,
   ..useGroups = NULL,
-  ..addCenters = F
+  ..groupTitle = NULL,
+  ..addCenters = F,
+  ..dark = F
 ) {
 
   theme_set(
@@ -86,6 +98,7 @@ dotGraph <- function(
       ..useGroups
     )
   ) {
+
     graphData %>%
       group_by(
         {
@@ -94,6 +107,7 @@ dotGraph <- function(
         }
       )
   } else {
+
     graphData
   }
 
@@ -123,7 +137,16 @@ dotGraph <- function(
                 eval()
             }
           )
-        )
+        ) +
+      labs(
+        color = {
+          ..groupTitle %>%
+            eval()
+        }
+      ) +
+      theme(
+        legend.position = "top"
+      )
 
     } else {
 
@@ -332,7 +355,50 @@ dotGraph <- function(
 
       stat_summary(
         fun.data = "median_mad",
-        size = 1
+        size = 1,
+        color = if(
+          ..dark == T
+        ) {
+          "white"
+        } else {
+          NULL
+        }
+      )
+  } else {
+
+    graph
+  }
+
+
+  if(
+    ..dark == T
+  ) {
+
+    graph +
+      theme(
+        plot.background = element_rect(
+          fill = "black"
+        ),
+        panel.background = element_rect(
+          fill = "black"
+        ),
+        text = element_text(
+          color = "white"
+        ),
+        legend.background = element_rect(
+          fill = "black"
+        ),
+        legend.key = element_rect(
+          fill = "black"
+        ),
+        panel.grid = element_blank(),
+        # panel.grid = element_line(
+        #   color = "gray"
+        # ),
+        # strip.background = element_rect(
+        #   fill = "black"
+        # )
+
       )
   } else {
 
