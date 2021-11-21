@@ -88,9 +88,10 @@ dotGraph <- function(
   ) {
     graphData %>%
       group_by(
-        {{
-          ..useGroups
-        }}
+        {
+          ..useGroups %>%
+            eval()
+        }
       )
   } else {
     graphData
@@ -108,16 +109,19 @@ dotGraph <- function(
 
         ggplot(
           aes(
-            x = {{
-              ..x
-            }},
-            y = {{
-              ..y
-            }},
+            x = {
+              ..x %>%
+                eval()
+            },
+            y = {
+              ..y %>%
+                eval()
+            },
 
-            color = {{
-              ..useGroups
-            }}
+            color = {
+              ..useGroups %>%
+                eval()
+            }
           )
         )
 
@@ -240,9 +244,10 @@ dotGraph <- function(
         geom_quasirandom(
           data = ..cleanData,
           aes(
-            y = {{
-              ..var
-            }}
+            y = {
+              ..var %>%
+                eval()
+            }
           ),
           color = "gray",
           size = 1

@@ -27,7 +27,6 @@ Imports:
     lmerTest,
     magrittr,
     poweRlaw,
-    R.cache,
     rpart,
     rstatix,
     survival,
