@@ -135,7 +135,8 @@ addStatEval <- function(
             ....formula[[3]] %>%
               length()
           } == 1,
-          {
+
+          yes = {
             varData %>%
               modify(
                 ~ .x %>%
@@ -143,13 +144,16 @@ addStatEval <- function(
                     formula =
                       ....formula[[2]] %>%
                       eval() ~
-                      ....formula[[3]] %>%
-                      eval() %>%
-                      as_factor()
+                      {
+                        ....formula[[3]] %>%
+                          eval() %>%
+                          as_factor()
+                      }
                   )
               )
           },
-          list(
+
+          no = list(
             tibble(
               "p" = NA
             )
@@ -266,6 +270,7 @@ addStatEval <- function(
                 )
             )
           },
+
           list(
             tibble(
               "adj.r.squared" = NA

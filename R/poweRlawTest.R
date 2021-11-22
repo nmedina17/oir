@@ -7,6 +7,7 @@ library(poweRlaw)
 #bootstrap::
 # library(rsample)
 library(parallel)
+library(tictoc)
 
 
 
@@ -24,6 +25,7 @@ CheckPoweRlaw <- function(
   #Clauset2009,Gillespie2015
   #bottleneck==boostrap()
 
+  tic()
   nCores <- detectCores()
 
 
@@ -146,6 +148,8 @@ CheckPoweRlaw <- function(
     "LognormVar1" = LognormVar1,
     "LognormVar2" = LognormVar2
   )
+
+  toc()
 
 
 

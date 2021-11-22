@@ -16,16 +16,16 @@ library(ggpmisc)
 library(glue)
 
 
-fontSize = 12
+fontSizeMin = 14
 # fontFamily = Helvetica
 
 style <- theme_bw() +
   theme(
     axis.text = element_text(
-      size = fontSize
+      size = fontSizeMin
     ),
     axis.title = element_text(
-      size = fontSize
+      size = fontSizeMin + 2
     )
   )
 #dark?
@@ -242,7 +242,8 @@ dotGraph <- function(
       ),
       x = 1,
       y = 1,
-      hjust = 0
+      hjust = -0.05,
+      size = 4
     )
 
 
@@ -361,7 +362,7 @@ dotGraph <- function(
         ) {
           "white"
         } else {
-          NULL
+          "black"
         }
       )
   } else {
@@ -392,6 +393,9 @@ dotGraph <- function(
           fill = "black"
         ),
         panel.grid = element_blank(),
+        axis.text = element_text(
+          color = "white"
+        )
         # panel.grid = element_line(
         #   color = "gray"
         # ),
