@@ -65,7 +65,7 @@ runFits <- function(
             .x %>%
               pull(
                 g
-              ) + 10
+              ) + 2
             #avoidLog0,1
             #fxAbs,keepsRelPattern
           )
