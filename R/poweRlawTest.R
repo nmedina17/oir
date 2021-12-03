@@ -29,9 +29,31 @@ CheckPoweRlaw <- function(
   nCores <- detectCores()
 
 
-  RealFreq <- round(
-    RealFreq
-  )
+  # stopifnot(
+  #   all(
+  #     is.numeric(
+  #       RealFreq
+  #     )
+  #   )
+  # )
+  RealFreq <- if(
+    !all(
+      is.numeric(
+        as_vector(
+          RealFreq
+        )
+      )
+    )
+  ) {
+    round(
+      RealFreq
+    )
+  } else {
+    c(
+      1, 1, 1, 1, 1
+    )
+  }
+
 
   Pl <- displ$new(
     RealFreq
