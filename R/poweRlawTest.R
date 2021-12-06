@@ -17,10 +17,15 @@ library(tictoc)
 #'
 #' @return "results" data frame
 #' @export
-#' @import poweRlaw
+#' @import poweRlaw, tictoc
 #' @examples
 CheckPoweRlaw <- function(
-  RealFreq
+  RealFreq,
+  xMin = NULL,
+  #poweRlaw::bootstrap()Default
+  xMax = 100000,
+  #poweRlaw::bootstrap()Default
+  nSims = 100
 ) {  #freqvector
   #Clauset2009,Gillespie2015
   #bottleneck==boostrap()
@@ -36,28 +41,48 @@ CheckPoweRlaw <- function(
   #     )
   #   )
   # )
-  RealFreq <- if(
-    !all(
-      is.numeric(
-        as_vector(
-          RealFreq
-        )
-      )
-    )
-  ) {
+  RealFreq <-# if(
+  #   !all(
+  #     is.numeric(
+  #       as_vector(
+  #         RealFreq
+  #       )
+  #     )
+  #   )
+  # ) {
     round(
       RealFreq
     )
-  } else {
-    c(
-      1, 1, 1, 1, 1
-    )
-  }
+  # } else {
+  #   c(
+  #     1, 1, 1, 1, 1
+  #   )
+  # }
+
 
 
   Pl <- displ$new(
     RealFreq
   )
+  if(
+    is.numeric(
+      xMin
+    )
+  ) {
+
+    Pl$setXmin(
+      xMin
+    )
+  } else {
+
+    Pl$setXmin(
+      #initial
+      estimate_xmin(
+        Pl
+      )
+    )
+  }
+
   Pl$setPars(
     estimate_pars(
       Pl
@@ -65,10 +90,15 @@ CheckPoweRlaw <- function(
   )
 
   #bottleneck==bootstrap()
+  #key4n=1
+
   PlVar <- var(
     poweRlaw::bootstrap(
       Pl,
-      threads = nCores
+      xmins = Pl$getXmin(),
+      xmax = xMax,
+      threads = nCores,
+      no_of_sims = nSims
     )$bootstraps$pars
   ) #variance
   #plot(Pl)
@@ -82,6 +112,24 @@ CheckPoweRlaw <- function(
   Exp <- disexp$new(
     RealFreq
   )
+  if(
+    is.numeric(
+      xMin
+    )
+  ) {
+
+    Exp$setXmin(
+      xMin
+    )
+  } else {
+
+    Exp$setXmin(
+      estimate_xmin(
+        Exp
+      )
+    )
+  }
+
   Exp$setPars(
     estimate_pars(
       Exp
@@ -91,7 +139,10 @@ CheckPoweRlaw <- function(
   ExpVar <- var(
     poweRlaw::bootstrap(
       Exp,
-      threads = nCores
+      xmins = Exp$getXmin(),
+      xmax = xMax,
+      threads = nCores,
+      no_of_sims = nSims
     )$bootstraps$pars
   )
 
@@ -99,6 +150,23 @@ CheckPoweRlaw <- function(
   Pois <- dispois$new(
     RealFreq
   )
+  if(
+    is.numeric(
+      xMin
+    )
+  ) {
+
+    Pois$setXmin(
+      xMin
+    )
+  } else {
+    Pois$setXmin(
+      estimate_xmin(
+        Pois
+      )
+    )
+  }
+
   Pois$setPars(
     estimate_pars(
       Pois
@@ -108,7 +176,10 @@ CheckPoweRlaw <- function(
   PoisVar <- var(
     poweRlaw::bootstrap(
       Pois,
-      threads = nCores
+      xmins = Pois$getXmin(),
+      xmax = xMax,
+      threads = nCores,
+      no_of_sims = nSims
     )$bootstraps$pars
   )
 
@@ -116,6 +187,24 @@ CheckPoweRlaw <- function(
   Lognorm <- dislnorm$new(
     RealFreq
   )
+  if(
+    is.numeric(
+      xMin
+    )
+  ) {
+
+    Lognorm$setXmin(
+      xMin
+    )
+  } else {
+
+    Lognorm$setXmin(
+      estimate_xmin(
+        Lognorm
+      )
+    )
+  }
+
   Lognorm$setPars(
     estimate_pars(
       Lognorm
@@ -124,7 +213,10 @@ CheckPoweRlaw <- function(
 
   LognormVar <- poweRlaw::bootstrap(
     Lognorm,
-    threads = nCores
+    xmins = Lognorm$getXmin(),
+    xmax = xMax,
+    threads = nCores,
+    no_of_sims = nSims
   )$bootstraps
   LognormVar1 <- var(
     LognormVar$pars1
@@ -136,15 +228,28 @@ CheckPoweRlaw <- function(
 
 
 
+  #dis1xmin==dis2xmin
+
   #null=bothOK #1sided=arg1==arg2
+  Exp$setXmin(
+    Pl$getXmin()
+  )
   PlExpP <- compare_distributions(
     Pl,
     Exp
   )$p_one_sided  #<0.05=arg1better
+
+  Lognorm$setXmin(
+    Pl$getXmin()
+  )
   PlLognormP <- compare_distributions(
     Pl,
     Lognorm
   )$p_one_sided
+
+  Pois$setXmin(
+    Pl$getXmin()
+  )
   PlPoisP <- compare_distributions(
     Pl,
     Pois
