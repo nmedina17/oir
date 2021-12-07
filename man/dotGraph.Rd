@@ -16,7 +16,9 @@ dotGraph(
   ..addLines = F,
   ..log10Axes = F,
   ..useGroups = NULL,
-  ..addCenters = F
+  ..groupTitle = NULL,
+  ..addCenters = F,
+  ..dark = F
 )
 }
 \arguments{

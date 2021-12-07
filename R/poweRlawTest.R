@@ -14,6 +14,8 @@ library(tictoc)
 #' Gather results of non-linear distribution fits to validate a power law fit
 #'
 #' @param RealFreq
+#' @param xMin
+#' @param nSims
 #'
 #' @return "results" data frame
 #' @export
@@ -92,20 +94,24 @@ CheckPoweRlaw <- function(
   #bottleneck==bootstrap()
   #key4n=1
 
-  PlVar <- var(
-    poweRlaw::bootstrap(
-      Pl,
-      xmins = Pl$getXmin(),
-      xmax = xMax,
-      threads = nCores,
-      no_of_sims = nSims
-    )$bootstraps$pars
-  ) #variance
+  #variance
+  # PlVar <- var(
+  #   poweRlaw::bootstrap(
+  #     Pl,
+  #     xmins = Pl$getXmin(),
+  #     xmax = xMax,
+  #     threads = nCores,
+  #     no_of_sims = nSims
+  #   )$bootstraps$pars
+  # )
   #plot(Pl)
 
   PlP <- bootstrap_p(
     Pl,
-    threads = nCores
+    xmins = xMin,,
+    xmax = xMax,
+    threads = nCores,
+    no_of_sims = nSims
   )$p  #>0.1passes
 
 
@@ -136,15 +142,15 @@ CheckPoweRlaw <- function(
     )
   )
 
-  ExpVar <- var(
-    poweRlaw::bootstrap(
-      Exp,
-      xmins = Exp$getXmin(),
-      xmax = xMax,
-      threads = nCores,
-      no_of_sims = nSims
-    )$bootstraps$pars
-  )
+  # ExpVar <- var(
+  #   poweRlaw::bootstrap(
+  #     Exp,
+  #     xmins = Exp$getXmin(),
+  #     xmax = xMax,
+  #     threads = nCores,
+  #     no_of_sims = nSims
+  #   )$bootstraps$pars
+  # )
 
 
   Pois <- dispois$new(
@@ -173,15 +179,15 @@ CheckPoweRlaw <- function(
     )
   )
 
-  PoisVar <- var(
-    poweRlaw::bootstrap(
-      Pois,
-      xmins = Pois$getXmin(),
-      xmax = xMax,
-      threads = nCores,
-      no_of_sims = nSims
-    )$bootstraps$pars
-  )
+  # PoisVar <- var(
+  #   poweRlaw::bootstrap(
+  #     Pois,
+  #     xmins = Pois$getXmin(),
+  #     xmax = xMax,
+  #     threads = nCores,
+  #     no_of_sims = nSims
+  #   )$bootstraps$pars
+  # )
 
 
   Lognorm <- dislnorm$new(
@@ -210,21 +216,21 @@ CheckPoweRlaw <- function(
       Lognorm
     )
   )
-
-  LognormVar <- poweRlaw::bootstrap(
-    Lognorm,
-    xmins = Lognorm$getXmin(),
-    xmax = xMax,
-    threads = nCores,
-    no_of_sims = nSims
-  )$bootstraps
-  LognormVar1 <- var(
-    LognormVar$pars1
-  )
-  LognormVar2 <- var(
-    LognormVar$pars2,
-    na.rm = T
-  )
+#
+#   LognormVar <- poweRlaw::bootstrap(
+#     Lognorm,
+#     xmins = Lognorm$getXmin(),
+#     xmax = xMax,
+#     threads = nCores,
+#     no_of_sims = nSims
+#   )$bootstraps
+#   LognormVar1 <- var(
+#     LognormVar$pars1
+#   )
+#   LognormVar2 <- var(
+#     LognormVar$pars2,
+#     na.rm = T
+#   )
 
 
 
@@ -267,13 +273,13 @@ CheckPoweRlaw <- function(
     "ExpPar" = Exp$pars,
     "PoisPar" = Pois$pars,
     "LognormPar1" = Lognorm$pars[1],
-    "LognormPar2" = Lognorm$pars[2],
+    "LognormPar2" = Lognorm$pars[2]
 
-    "PlVar" = PlVar,
-    "ExpVar" = ExpVar,
-    "PoisVar" = PoisVar,
-    "LognormVar1" = LognormVar1,
-    "LognormVar2" = LognormVar2
+    # "PlVar" = PlVar,
+    # "ExpVar" = ExpVar,
+    # "PoisVar" = PoisVar,
+    # "LognormVar1" = LognormVar1,
+    # "LognormVar2" = LognormVar2
   )
 
   toc()

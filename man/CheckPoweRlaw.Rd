@@ -4,7 +4,7 @@
 \alias{CheckPoweRlaw}
 \title{Gather results of non-linear distribution fits to validate a power law fit}
 \usage{
-CheckPoweRlaw(RealFreq)
+CheckPoweRlaw(RealFreq, xMin = NULL, xMax = 1e+05, nSims = 100)
 }
 \arguments{
 \item{RealFreq}{}
