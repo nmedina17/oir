@@ -36,254 +36,293 @@ CheckPoweRlaw <- function(
   nCores <- detectCores()
 
 
-  # stopifnot(
-  #   all(
-  #     is.numeric(
-  #       RealFreq
-  #     )
-  #   )
-  # )
-  RealFreq <-# if(
-  #   !all(
-  #     is.numeric(
-  #       as_vector(
-  #         RealFreq
-  #       )
-  #     )
-  #   )
-  # ) {
-    round(
-      RealFreq
-    )
-  # } else {
-  #   c(
-  #     1, 1, 1, 1, 1
-  #   )
-  # }
-
-
-
-  Pl <- displ$new(
-    RealFreq
-  )
   if(
-    is.numeric(
-      xMin
+    any(
+      is.na(
+        RealFreq
+      ) |
+      all(
+        RealFreq == 1
+      )
     )
   ) {
 
-    Pl$setXmin(
-      xMin
-    )
-  } else {
+    results <- data.frame(
+      "PlP" = NA,
+      "PlExpP" = NA,
+      "PlLognormP" = NA,
+      "PlPoisP" = NA,
 
-    Pl$setXmin(
-      #initial
-      estimate_xmin(
+      "PlPar" = NA,
+      "ExpPar" = NA,
+      "PoisPar" = NA,
+      "LognormPar1" = NA,
+      "LognormPar2" = NA
+
+      # "PlVar" = PlVar,
+      # "ExpVar" = ExpVar,
+      # "PoisVar" = PoisVar,
+      # "LognormVar1" = LognormVar1,
+      # "LognormVar2" = LognormVar2
+    )
+
+
+    return(
+      results
+    )
+
+
+
+  } else {
+    # stopifnot(
+    #   all(
+    #     is.numeric(
+    #       RealFreq
+    #     )
+    #   )
+    # )
+    RealFreq <-# if(
+    #   !all(
+    #     is.numeric(
+    #       as_vector(
+    #         RealFreq
+    #       )
+    #     )
+    #   )
+    # ) {
+      round(
+        RealFreq
+      )
+    # } else {
+    #   c(
+    #     1, 1, 1, 1, 1
+    #   )
+    # }
+
+
+
+    Pl <- displ$new(
+      RealFreq
+    )
+    if(
+      is.numeric(
+        xMin
+      )
+    ) {
+
+      Pl$setXmin(
+        xMin
+      )
+    } else {
+
+      Pl$setXmin(
+        #initial
+        estimate_xmin(
+          Pl
+        )
+      )
+    }
+
+    Pl$setPars(
+      estimate_pars(
         Pl
       )
     )
-  }
 
-  Pl$setPars(
-    estimate_pars(
-      Pl
+    #bottleneck==bootstrap()
+    #key4n=1
+
+    #variance
+    # PlVar <- var(
+    #   poweRlaw::bootstrap(
+    #     Pl,
+    #     xmins = Pl$getXmin(),
+    #     xmax = xMax,
+    #     threads = nCores,
+    #     no_of_sims = nSims
+    #   )$bootstraps$pars
+    # )
+    #plot(Pl)
+
+    PlP <- bootstrap_p(
+      Pl,
+      xmins = xMin,,
+      xmax = xMax,
+      threads = nCores,
+      no_of_sims = nSims
+    )$p  #>0.1passes
+
+
+    Exp <- disexp$new(
+      RealFreq
     )
-  )
+    if(
+      is.numeric(
+        xMin
+      )
+    ) {
 
-  #bottleneck==bootstrap()
-  #key4n=1
+      Exp$setXmin(
+        xMin
+      )
+    } else {
 
-  #variance
-  # PlVar <- var(
-  #   poweRlaw::bootstrap(
-  #     Pl,
-  #     xmins = Pl$getXmin(),
-  #     xmax = xMax,
-  #     threads = nCores,
-  #     no_of_sims = nSims
-  #   )$bootstraps$pars
-  # )
-  #plot(Pl)
+      Exp$setXmin(
+        estimate_xmin(
+          Exp
+        )
+      )
+    }
 
-  PlP <- bootstrap_p(
-    Pl,
-    xmins = xMin,,
-    xmax = xMax,
-    threads = nCores,
-    no_of_sims = nSims
-  )$p  #>0.1passes
-
-
-  Exp <- disexp$new(
-    RealFreq
-  )
-  if(
-    is.numeric(
-      xMin
-    )
-  ) {
-
-    Exp$setXmin(
-      xMin
-    )
-  } else {
-
-    Exp$setXmin(
-      estimate_xmin(
+    Exp$setPars(
+      estimate_pars(
         Exp
       )
     )
-  }
 
-  Exp$setPars(
-    estimate_pars(
-      Exp
+    # ExpVar <- var(
+    #   poweRlaw::bootstrap(
+    #     Exp,
+    #     xmins = Exp$getXmin(),
+    #     xmax = xMax,
+    #     threads = nCores,
+    #     no_of_sims = nSims
+    #   )$bootstraps$pars
+    # )
+
+
+    Pois <- dispois$new(
+      RealFreq
     )
-  )
+    if(
+      is.numeric(
+        xMin
+      )
+    ) {
 
-  # ExpVar <- var(
-  #   poweRlaw::bootstrap(
-  #     Exp,
-  #     xmins = Exp$getXmin(),
-  #     xmax = xMax,
-  #     threads = nCores,
-  #     no_of_sims = nSims
-  #   )$bootstraps$pars
-  # )
+      Pois$setXmin(
+        xMin
+      )
+    } else {
+      Pois$setXmin(
+        estimate_xmin(
+          Pois
+        )
+      )
+    }
 
-
-  Pois <- dispois$new(
-    RealFreq
-  )
-  if(
-    is.numeric(
-      xMin
-    )
-  ) {
-
-    Pois$setXmin(
-      xMin
-    )
-  } else {
-    Pois$setXmin(
-      estimate_xmin(
+    Pois$setPars(
+      estimate_pars(
         Pois
       )
     )
-  }
 
-  Pois$setPars(
-    estimate_pars(
-      Pois
+    # PoisVar <- var(
+    #   poweRlaw::bootstrap(
+    #     Pois,
+    #     xmins = Pois$getXmin(),
+    #     xmax = xMax,
+    #     threads = nCores,
+    #     no_of_sims = nSims
+    #   )$bootstraps$pars
+    # )
+
+
+    Lognorm <- dislnorm$new(
+      RealFreq
     )
-  )
+    if(
+      is.numeric(
+        xMin
+      )
+    ) {
 
-  # PoisVar <- var(
-  #   poweRlaw::bootstrap(
-  #     Pois,
-  #     xmins = Pois$getXmin(),
-  #     xmax = xMax,
-  #     threads = nCores,
-  #     no_of_sims = nSims
-  #   )$bootstraps$pars
-  # )
+      Lognorm$setXmin(
+        xMin
+      )
+    } else {
 
+      Lognorm$setXmin(
+        estimate_xmin(
+          Lognorm
+        )
+      )
+    }
 
-  Lognorm <- dislnorm$new(
-    RealFreq
-  )
-  if(
-    is.numeric(
-      xMin
-    )
-  ) {
-
-    Lognorm$setXmin(
-      xMin
-    )
-  } else {
-
-    Lognorm$setXmin(
-      estimate_xmin(
+    Lognorm$setPars(
+      estimate_pars(
         Lognorm
       )
     )
-  }
+  #
+  #   LognormVar <- poweRlaw::bootstrap(
+  #     Lognorm,
+  #     xmins = Lognorm$getXmin(),
+  #     xmax = xMax,
+  #     threads = nCores,
+  #     no_of_sims = nSims
+  #   )$bootstraps
+  #   LognormVar1 <- var(
+  #     LognormVar$pars1
+  #   )
+  #   LognormVar2 <- var(
+  #     LognormVar$pars2,
+  #     na.rm = T
+  #   )
 
-  Lognorm$setPars(
-    estimate_pars(
-      Lognorm
+
+
+    #dis1xmin==dis2xmin
+
+    #null=bothOK #1sided=arg1==arg2
+    Exp$setXmin(
+      Pl$getXmin()
     )
-  )
-#
-#   LognormVar <- poweRlaw::bootstrap(
-#     Lognorm,
-#     xmins = Lognorm$getXmin(),
-#     xmax = xMax,
-#     threads = nCores,
-#     no_of_sims = nSims
-#   )$bootstraps
-#   LognormVar1 <- var(
-#     LognormVar$pars1
-#   )
-#   LognormVar2 <- var(
-#     LognormVar$pars2,
-#     na.rm = T
-#   )
+    PlExpP <- compare_distributions(
+      Pl,
+      Exp
+    )$p_one_sided  #<0.05=arg1better
+
+    Lognorm$setXmin(
+      Pl$getXmin()
+    )
+    PlLognormP <- compare_distributions(
+      Pl,
+      Lognorm
+    )$p_one_sided
+
+    Pois$setXmin(
+      Pl$getXmin()
+    )
+    PlPoisP <- compare_distributions(
+      Pl,
+      Pois
+    )$p_one_sided
 
 
 
-  #dis1xmin==dis2xmin
+    #pivot?==majorBreak!
+    results <- data.frame(
+      "PlP" = PlP,
+      "PlExpP" = PlExpP,
+      "PlLognormP" = PlLognormP,
+      "PlPoisP" = PlPoisP,
 
-  #null=bothOK #1sided=arg1==arg2
-  Exp$setXmin(
-    Pl$getXmin()
-  )
-  PlExpP <- compare_distributions(
-    Pl,
-    Exp
-  )$p_one_sided  #<0.05=arg1better
+      "PlPar" = Pl$pars,
+      "ExpPar" = Exp$pars,
+      "PoisPar" = Pois$pars,
+      "LognormPar1" = Lognorm$pars[1],
+      "LognormPar2" = Lognorm$pars[2]
 
-  Lognorm$setXmin(
-    Pl$getXmin()
-  )
-  PlLognormP <- compare_distributions(
-    Pl,
-    Lognorm
-  )$p_one_sided
+      # "PlVar" = PlVar,
+      # "ExpVar" = ExpVar,
+      # "PoisVar" = PoisVar,
+      # "LognormVar1" = LognormVar1,
+      # "LognormVar2" = LognormVar2
+    )
 
-  Pois$setXmin(
-    Pl$getXmin()
-  )
-  PlPoisP <- compare_distributions(
-    Pl,
-    Pois
-  )$p_one_sided
-
-
-
-  results <- data.frame(
-    "PlP" = PlP,
-    "PlExpP" = PlExpP,
-    "PlLognormP" = PlLognormP,
-    "PlPoisP" = PlPoisP,
-
-    "PlPar" = Pl$pars,
-    "ExpPar" = Exp$pars,
-    "PoisPar" = Pois$pars,
-    "LognormPar1" = Lognorm$pars[1],
-    "LognormPar2" = Lognorm$pars[2]
-
-    # "PlVar" = PlVar,
-    # "ExpVar" = ExpVar,
-    # "PoisVar" = PoisVar,
-    # "LognormVar1" = LognormVar1,
-    # "LognormVar2" = LognormVar2
-  )
-
-  toc()
-
+    toc()
+  }
 
 
   return(
