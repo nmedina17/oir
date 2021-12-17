@@ -196,11 +196,34 @@ addStatEval <- function(
 
     mutate(
       "isModelOK" =
-        if_else(
-          isNormal &
-            isHomosced,
-          T, F
-        )
+        {
+          check <- ifelse(
+            (
+              isNormal &
+                isHomosced
+            ),
+            T,
+            F
+          )
+
+          #noNAarg4ifelse()...
+          ifelse(
+            !is.na(
+              check
+            ),
+            check,
+            ifelse(
+              (
+                isNormal &
+                  is.na(
+                    isHomosced
+                  )
+              ),
+              T,
+              F
+            )
+          )
+        }
     ) %>%
     unnest(
       isModelOK
