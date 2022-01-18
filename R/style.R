@@ -16,7 +16,7 @@ library(ggpmisc)
 library(glue)
 
 
-fontSizeMin = 14
+fontSizeMin = 6
 # fontFamily = Helvetica
 
 style <- theme_bw() +
@@ -25,7 +25,7 @@ style <- theme_bw() +
       size = fontSizeMin
     ),
     axis.title = element_text(
-      size = fontSizeMin + 2
+      size = fontSizeMin + 1
     )
   )
 #dark?
@@ -243,7 +243,7 @@ dotGraph <- function(
       x = 1,
       y = 1,
       hjust = -0.05,
-      size = 4
+      size = 2
     )
 
 
@@ -302,7 +302,7 @@ dotGraph <- function(
             )
         },
         color = "black",
-        size = 3
+        size = 2
       )
 
   } else {
@@ -356,7 +356,7 @@ dotGraph <- function(
 
       stat_summary(
         fun.data = "median_mad",
-        size = 1,
+        size = 0.25,
         color = if(
           ..dark == T
         ) {
