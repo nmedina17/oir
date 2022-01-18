@@ -51,7 +51,7 @@ cutoff <- 0.125
 #'
 #' @return scatter ggplot
 #' @export
-#' @import tidyverse
+#' @import tidyverse, ggpmisc
 #' @examples
 dotGraph <- function(
   ..varData,
@@ -338,9 +338,16 @@ dotGraph <- function(
 
       stat_smooth(
         se = F,
-        # color = "black",
-        size = 1,
+        color = "black",
+        size = 0.5,
         method = "lm"
+      ) +
+      ggpmisc::stat_poly_eq(
+        size = 2,
+        label.x = "left",
+        label.y = (
+          1 - 0.125
+        )
       )
   } else {
 
