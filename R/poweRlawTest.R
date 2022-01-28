@@ -23,9 +23,9 @@ library(tictoc)
 #' @examples
 CheckPoweRlaw <- function(
   RealFreq,
-  xMin = NULL,
+  xMin = 1,
   #poweRlaw::bootstrap()Default
-  xMax = 100000,
+  xMax = 999999999,
   #poweRlaw::bootstrap()Default
   nSims = 100
 ) {  #freqvector
@@ -40,10 +40,17 @@ CheckPoweRlaw <- function(
     any(
       is.na(
         RealFreq
-      ) |
-      all(
-        RealFreq == 1
       )
+    ) |
+    all(
+      RealFreq == 1 |
+      RealFreq == 0
+    ) |
+    length(
+      RealFreq
+    ) < 3 |
+    is.null(
+      RealFreq
     )
   ) {
 
@@ -146,7 +153,7 @@ CheckPoweRlaw <- function(
 
     PlP <- bootstrap_p(
       Pl,
-      xmins = xMin,,
+      xmins = xMin,
       xmax = xMax,
       threads = nCores,
       no_of_sims = nSims

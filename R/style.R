@@ -241,7 +241,7 @@ dotGraph <- function(
         }
       ),
       x = 1,
-      y = 1,
+      y = 2,
       hjust = -0.05,
       size = 2
     )
@@ -346,7 +346,7 @@ dotGraph <- function(
         size = 2,
         label.x = "left",
         label.y = (
-          1 - 0.125
+          2 - 0.125
         )
       )
   } else {
