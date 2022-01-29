@@ -25,7 +25,7 @@ CheckPoweRlaw <- function(
   RealFreq,
   xMin = 1,
   #poweRlaw::bootstrap()Default
-  xMax = 999999999,
+  xMax = 999999,
   #poweRlaw::bootstrap()Default
   nSims = 100
 ) {  #freqvector
