@@ -23,9 +23,9 @@ library(tictoc)
 #' @examples
 CheckPoweRlaw <- function(
   RealFreq,
-  xMin = 1,
+  xMin = NULL,
   #poweRlaw::bootstrap()Default
-  xMax = 999999,
+  xMax = 99999,
   #poweRlaw::bootstrap()Default
   nSims = 100
 ) {  #freqvector

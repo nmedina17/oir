@@ -38,11 +38,11 @@ cutoff <- 0.125
 #' Sets cleaner ggplot style, scatter default
 #'
 #' @param ..varData
-#' @param ..var
+#' @param ..var string vec
 #' @param ..x
 #' @param ..y
-#' @param ..xlab
-#' @param ..ylab
+#' @param ..xlab quoted string
+#' @param ..ylab quoted string
 #' @param ..cleanData
 #' @param ..addBins
 #' @param ..addLines
@@ -63,8 +63,8 @@ dotGraph <- function(
   ..var,
   ..x,
   ..y,
-  ..xlab,
-  ..ylab,
+  ..xlab = NULL,
+  ..ylab = NULL,
   ..addBins = F,
   ..cleanData = NULL,
   ..addLines = F,
@@ -72,6 +72,7 @@ dotGraph <- function(
   ..useGroups = NULL,
   ..groupTitle = NULL,
   ..addCenters = F,
+  ..addP = T,
   ..dark = F
 ) {
 
@@ -83,7 +84,11 @@ dotGraph <- function(
   graphData <- ..varData %>%
 
     filter(
-      variable == ..var
+      variable == ..var[1] |
+        variable == ..var[2] |
+        variable == ..var[3] |
+        variable == ..var[4] |
+        variable == ..var[5]
     ) %>%
     select(
       "varData"
@@ -185,66 +190,76 @@ dotGraph <- function(
         ..ylab %>%
           eval()
       }
-    ) +
-
-    annotate(
-      "text",
-      label = glue(
-        "P = ",
-        {
-          varResult <- ..varData %>%
-            filter(
-              variable == ..var
-            )
-
-          checkResult <- varResult %>%
-            pull(
-              isModelOK
-            )
-
-          #if_else()2strict
-          showP <- ifelse(
-            checkResult &
-              !is.na(
-                checkResult
-              ),
-            {
-              varResult %>%
-              pull(
-                "pval"
-              )
-            },
-            {
-              varResult %>%
-              pull(
-                "pickPval"
-              )
-            }
-          ) %>%
-            last() %>%
-            as.double()
-
-          ifelse(
-            showP >
-              cutoff,
-            "> 0.10",
-            ifelse(
-              showP < cutoff &
-                showP > 0.001,
-              round(
-                showP,
-                3
-              ),
-              "< 0.001"
-            )
-          )
-        }
-      ),
-      x = 1,
-      y = 2,
-      hjust = -0.05,
-      size = 2
     )
+
+
+  graph <- if(
+    ..addP == T
+  ) {
+
+    graph <- graph +
+      annotate(
+        "text",
+        label = glue(
+          "P = ",
+          {
+            varResult <- ..varData %>%
+              filter(
+                variable == ..var[1]
+              )
+
+            checkResult <- varResult %>%
+              pull(
+                isModelOK
+              )
+
+            #if_else()2strict
+            showP <- ifelse(
+              checkResult &
+                !is.na(
+                  checkResult
+                ),
+              {
+                varResult %>%
+                pull(
+                  "pval"
+                )
+              },
+              {
+                varResult %>%
+                pull(
+                  "pickPval"
+                )
+              }
+            ) %>%
+              last() %>%
+              as.double()
+
+            ifelse(
+              showP >
+                cutoff,
+              "> 0.10",
+              ifelse(
+                showP < cutoff &
+                  showP > 0.001,
+                round(
+                  showP,
+                  3
+                ),
+                "< 0.001"
+              )
+            )
+          }
+        ),
+        x = 1,
+        y = 1.1,
+        hjust = -0.05,
+        size = 2
+      )
+
+  } else {
+    graph
+  }
 
 
   #toggles
