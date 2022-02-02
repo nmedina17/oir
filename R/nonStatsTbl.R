@@ -22,9 +22,9 @@ addStatFitNon <- function(
   ....formula
 ) {
 
-   mutate(
-     ...statEvalTbl,
+  ...statEvalTbl %>%
 
+   mutate(
     "statTestPois" =
       modify_if(
         varData,
@@ -70,8 +70,72 @@ addStatFitNon <- function(
           "aic" = 9999999,
           "coefficients" = 999
         )
-      ),
-    # .keep = "used"
+      )
+    # .keep = "used",
+
+    # "glmerPois" = varData %>%
+    #   modify_if(
+    #     {
+    #       {
+    #         ....formula[[3]] %>%
+    #           length()
+    #       } > 1
+    #     } &
+    #       {
+    #         !isModelOK &
+    #           !is.na(
+    #             isModelOK
+    #           )
+    #       },
+    #     ~ .x %>%
+    #       glmer(
+    #         formula = ....formula,
+    #         family = poisson(
+    #           link = "identity"
+    #         ),
+    #         control = glmerControl(
+    #           "bobyqa"
+    #         )
+    #       ) %>%
+    #       summary(),
+    #     .else = ~ tibble(
+    #       "AICtab" = 9999999,
+    #       "coefficients" = 999
+    #     )
+    #   ),
+    # "glmerGamma" = varData %>%
+    #   modify_if(
+    #     {
+    #       {
+    #         ....formula[[3]] %>%
+    #           length()
+    #       } > 1
+    #     } &
+    #       {
+    #         !isModelOK &
+    #         !is.na(
+    #           isModelOK
+    #         )
+    #       },
+    #     ~ .x %>%
+    #       glmer(
+    #         formula = ....formula,
+    #         family = Gamma(
+    #           link = "identity"
+    #         ),
+    #         control = glmerControl(
+    #           c(
+    #             "bobyqa",
+    #             # "Nelder_Mead"
+    #           )
+    #         )
+    #       ) %>%
+    #       summary(),
+    #     .else = ~ tibble(
+    #       "AICtab" = 9999999,
+    #       "coefficients" = 999
+    #     )
+    #   )
   )
 }
 
@@ -102,7 +166,7 @@ addStatEvalNon <- function(
               ),
             ~ .x$
               aic,
-            .else = ~ 2,
+            .else = ~ 9999999,
           ),
         gammaAIC =
           statTestGamma %>%
@@ -113,7 +177,7 @@ addStatEvalNon <- function(
               ),
             ~ .x$
               aic,
-            .else = ~ 2,
+            .else = ~ 9999999,
           ),
         poisPval =
           statTestPois %>%
@@ -124,6 +188,7 @@ addStatEvalNon <- function(
               ),
             ~ .x$
               coefficients %>%
+              #only1fixedVar!
               #[8]
               last(),
             .else = ~ 2,
@@ -137,6 +202,7 @@ addStatEvalNon <- function(
               ),
             ~ .x$
               coefficients %>%
+              #only1fixedVar!
               #[8]
               last(),
             .else = ~ 2
@@ -144,23 +210,14 @@ addStatEvalNon <- function(
       ) %>%
 
       unnest(
-        poisAIC
+        c(
+          poisAIC,
+          gammaAIC,
+          poisPval,
+          gammaPval
+        )
         # names_repair = "universal"
       ) %>%
-      unnest(
-        gammaAIC
-        # names_repair = "universal"
-      ) %>%
-      unnest(
-        poisPval
-        # names_repair = "universal"
-      ) %>%
-      unnest(
-        gammaPval
-        # names_repair = "universal"
-      ) %>%
-
-      #names_repair = "unique"
 
       #eval
       mutate(
@@ -189,10 +246,132 @@ addStatEvalNon <- function(
         "isSignif9" =
           if_else(
             pickPval <
-              0.105,
+              0.125,
             T, F
           )
       )
+
+
+    # mutate(
+    #   gPoisAIC = glmerPois %>%
+    #     modify_if(
+    #       {
+    #         {
+    #           ....formula[[3]] %>%
+    #             length()
+    #         } > 1
+    #       } &
+    #         {
+    #           !isModelOK &
+    #           !is.na(
+    #             isModelOK
+    #           )
+    #         },
+    #       ~ .x$
+    #         AICtab["AIC"],
+    #       .else = ~ 9999999
+    #     ),
+    #   gGammaAIC = glmerGamma %>%
+    #     modify_if(
+    #       {
+    #         {
+    #           ....formula[[3]] %>%
+    #             length()
+    #         } > 1
+    #       } &
+    #         {
+    #           !isModelOK &
+    #           !is.na(
+    #             isModelOK
+    #           )
+    #         },
+    #       ~ .x$
+    #         AICtab["AIC"],
+    #       .else = ~ 9999999
+    #     ),
+    #   gPoisPval = glmerPois %>%
+    #     modify_if(
+    #       {
+    #         {
+    #           ....formula[[3]] %>%
+    #             length()
+    #         } > 1
+    #       } &
+    #         {
+    #           !isModelOK &
+    #           !is.na(
+    #             isModelOK
+    #           )
+    #         },
+    #       ~ .x$
+    #         coefficients %>%
+    #         #only1fixedVar!
+    #         last(),
+    #       .else = ~ 2
+    #     ),
+    #   gGammaPval = glmerPois %>%
+    #     modify_if(
+    #       {
+    #         {
+    #           ....formula[[3]] %>%
+    #             length()
+    #         } > 1
+    #       } &
+    #         {
+    #           !isModelOK &
+    #           !is.na(
+    #             isModelOK
+    #           )
+    #         },
+    #       ~ .x$
+    #         coefficients %>%
+    #         #only1fixedVar!
+    #         last(),
+    #       .else = ~ 2
+    #     )
+    # ) %>%
+    #
+    # unnest(
+    #   c(
+    #     gPoisAIC,
+    #     gGammaAIC,
+    #     gPoisPval,
+    #     gGammaPval
+    #   )
+    #   # names_repair = "universal"
+    # ) %>%
+    #
+    # #eval
+    # mutate(
+    #   "pickgAIC" =
+    #     pmin(
+    #       gPoisAIC,
+    #       gGammaAIC,
+    #       na.rm = T
+    #     )
+    # ) %>%
+    # unnest(
+    #   pickgAIC
+    # ) %>%
+    # mutate(
+    #   #morefamilies?
+    #   "pickgPval" =
+    #     ifelse(
+    #       pickgAIC == gPoisAIC,
+    #       gPoisPval,
+    #       if_else(
+    #         pickgAIC == gGammaAIC,
+    #         gGammaPval,
+    #         9
+    #       )
+    #     ),
+    #   "isSignifg9" =
+    #     if_else(
+    #       pickgPval <
+    #         0.125,
+    #       T, F
+    #     )
+    # )
 }
 
 

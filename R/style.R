@@ -39,15 +39,15 @@ cutoff <- 0.125
 #'
 #' @param ..varData
 #' @param ..var string vec
-#' @param ..x
-#' @param ..y
+#' @param ..x quoted col
+#' @param ..y quoted col
 #' @param ..xlab quoted string
 #' @param ..ylab quoted string
 #' @param ..cleanData
 #' @param ..addBins
 #' @param ..addLines
 #' @param ..log10Axes
-#' @param ..useGroups
+#' @param ..useGroups quoted col
 #'
 #' @return scatter ggplot
 #' @export
@@ -84,11 +84,11 @@ dotGraph <- function(
   graphData <- ..varData %>%
 
     filter(
-      variable == ..var[1] |
-        variable == ..var[2] |
-        variable == ..var[3] |
-        variable == ..var[4] |
-        variable == ..var[5]
+      variable == ..var
+        # variable == ..var[2] |
+        # variable == ..var[3] |
+        # variable == ..var[4] |
+        # variable == ..var[5]
     ) %>%
     select(
       "varData"
@@ -205,7 +205,7 @@ dotGraph <- function(
           {
             varResult <- ..varData %>%
               filter(
-                variable == ..var[1]
+                variable == ..var
               )
 
             checkResult <- varResult %>%
