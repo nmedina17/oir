@@ -46,6 +46,7 @@ cutoff <- 0.125
 #' @param ..cleanData
 #' @param ..addBins
 #' @param ..addLines
+#' @param ..addCurve
 #' @param ..log10Axes
 #' @param ..useGroups quoted col
 #'
@@ -68,6 +69,7 @@ dotGraph <- function(
   ..addBins = F,
   ..cleanData = NULL,
   ..addLines = F,
+  ..addCurve = F,
   ..log10Axes = F,
   ..useGroups = NULL,
   ..groupTitle = NULL,
@@ -97,7 +99,7 @@ dotGraph <- function(
       everything()
     )
 
-
+  # useGroups----
   graphData <- if(
     !is_null(
       ..useGroups
@@ -175,11 +177,15 @@ dotGraph <- function(
 
   graph <- graph +
 
-    geom_quasirandom(
+    ggbeeswarm::geom_quasirandom(
       # color = "black",
       shape = 21,
       fill = "white",
       size = 2
+
+      #conditionalNeed?
+      # groupOnX = T
+
     ) +
     labs(
       x = {
@@ -192,17 +198,19 @@ dotGraph <- function(
       }
     )
 
-
+  # addP----
   graph <- if(
     ..addP == T
   ) {
 
     graph <- graph +
+
       annotate(
         "text",
         label = glue(
           "P = ",
           {
+
             varResult <- ..varData %>%
               filter(
                 variable == ..var
@@ -219,19 +227,22 @@ dotGraph <- function(
                 !is.na(
                   checkResult
                 ),
-              {
+
+              yes = {
                 varResult %>%
                 pull(
                   "pval"
                 )
               },
-              {
+
+              no = {
                 varResult %>%
                 pull(
                   "pickPval"
                 )
               }
             ) %>%
+
               last() %>%
               as.double()
 
@@ -265,6 +276,7 @@ dotGraph <- function(
   #toggles
 
 
+  # cleanData----
   graph <- if(
     is.null(
       ..cleanData
@@ -297,6 +309,7 @@ dotGraph <- function(
   }
 
 
+  # addBins----
   graph <- if(
     ..addBins == T
   ) {
@@ -326,6 +339,7 @@ dotGraph <- function(
   }
 
 
+  # log10Axes----
   graph <- if(
     ..log10Axes == T
   ) {
@@ -345,24 +359,31 @@ dotGraph <- function(
   }
 
 
+  # addCurve----
   graph <- if(
-    ..addLines == T
+    ..addCurve == T
   ) {
+
+    curve <- y ~
+      poly(
+        x,
+        2
+      )
 
     graph <- graph +
 
       stat_smooth(
+        formula = curve,
         se = F,
         color = "black",
         size = 0.5,
         method = "lm"
       ) +
       ggpmisc::stat_poly_eq(
+        formula = curve,
         size = 2,
-        label.x = "left",
-        label.y = (
-          2 - 0.125
-        )
+        label.x = "right",
+        label.y = 1.1
       )
   } else {
 
@@ -370,6 +391,32 @@ dotGraph <- function(
   }
 
 
+  # addLines----
+  graph <- if(
+    ..addLines == T
+  ) {
+
+    graph <- graph +
+
+      stat_smooth(
+        # formula = curve,
+        se = F,
+        color = "black",
+        size = 0.5,
+        method = "lm"
+      ) +
+      ggpmisc::stat_poly_eq(
+        size = 2,
+        label.x = "right",
+        label.y = 1.1
+      )
+  } else {
+
+    graph
+  }
+
+
+  # addCenters----
   graph <- if(
     ..addCenters == T
   ) {
@@ -378,6 +425,7 @@ dotGraph <- function(
 
       stat_summary(
         fun.data = "median_mad",
+        geom = "pointrange",
         size = 0.25,
         color = if(
           ..dark == T
@@ -393,6 +441,7 @@ dotGraph <- function(
   }
 
 
+  # dark----
   if(
     ..dark == T
   ) {

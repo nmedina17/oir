@@ -153,8 +153,8 @@ CheckPoweRlaw <- function(
 
     PlP <- bootstrap_p(
       Pl,
-      xmins = xMin,
-      xmax = xMax,
+      # xmins = xMin,
+      # xmax = xMax,
       threads = nCores,
       no_of_sims = nSims
     )$p  #>0.1passes
