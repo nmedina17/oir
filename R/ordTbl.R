@@ -33,13 +33,9 @@ getOrdVarTbl <- function(
     ...metaTbl,
     ordTbl
   ) %>%
-    as_tibble()
+    as_tibble() %>%
 
-
-  return(
-    .,
-    ord
-  )
+    return()
 }
 #ggplot::scale_color_brewer()
 
