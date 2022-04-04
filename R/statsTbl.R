@@ -14,7 +14,7 @@ library(ggpubr) #ggarrange()
 # ) #disfit()
 
 
-#main
+#main----
 
 #' Gather results of basic regression, assumption checks, & generalized versions
 #'
@@ -55,7 +55,7 @@ getStatsTbl <- function(
 
 
 
-#sub-funcs
+#parts----
 
 #' Mutates lm and summary output onto tbl--needs $varData, $statTest
 #'

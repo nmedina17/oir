@@ -1,3 +1,6 @@
+#refs----
+
+
 library(tidyverse)
 #geom_quasirandom()
 library(ggbeeswarm)
@@ -16,6 +19,10 @@ library(ggpmisc)
 library(glue)
 
 
+
+#style----
+
+
 fontSizeMin = 6
 # fontFamily = Helvetica
 
@@ -26,12 +33,21 @@ style <- theme_bw() +
     ),
     axis.title = element_text(
       size = fontSizeMin + 1
+    ),
+    strip.background = element_rect(
+      fill = "white"
     )
   )
 #dark?
 
-#pval
+
+
+#pcut----
 cutoff <- 0.125
+
+
+
+#main----
 
 
 
@@ -49,6 +65,12 @@ cutoff <- 0.125
 #' @param ..addCurve
 #' @param ..log10Axes
 #' @param ..useGroups quoted col
+#' @param ..groupTitle
+#' @param ..addCenters
+#' @param ..addP
+#' @param ..addPxy short vector
+#' @param ..addPsize integer font
+#' @param ..dark
 #'
 #' @return scatter ggplot
 #' @export
@@ -75,6 +97,10 @@ dotGraph <- function(
   ..groupTitle = NULL,
   ..addCenters = F,
   ..addP = T,
+  ..addPxy = c(
+    1, 1.1
+  ),
+  ..addPsize = 2,
   ..dark = F
 ) {
 
@@ -262,10 +288,10 @@ dotGraph <- function(
             )
           }
         ),
-        x = 1,
-        y = 1.1,
+        x = ..addPxy[1],
+        y = ..addPxy[2],
         hjust = -0.05,
-        size = 2
+        size = ..addPsize
       )
 
   } else {
@@ -301,7 +327,7 @@ dotGraph <- function(
             }
           ),
           color = "gray",
-          size = 1
+          size = 0.5
         ),
 
         position = "bottom"
@@ -330,7 +356,7 @@ dotGraph <- function(
             )
         },
         color = "black",
-        size = 2
+        size = 1
       )
 
   } else {
@@ -401,14 +427,17 @@ dotGraph <- function(
       stat_smooth(
         # formula = curve,
         se = F,
-        color = "black",
+        # color = "black",
         size = 0.5,
-        method = "lm"
+        method = "lm",
+        # parse = T
       ) +
       ggpmisc::stat_poly_eq(
         size = 2,
         label.x = "right",
-        label.y = 1.1
+        # label.y = 1.1,
+        label.y = "top",
+        parse = T
       )
   } else {
 
@@ -477,7 +506,31 @@ dotGraph <- function(
       )
   } else {
 
-    graph
+    graph +
+
+      #shrinkleg----
+      theme(
+        #allsmaller
+        legend.text = element_text(
+          size = 6
+        ),
+        legend.key.size = unit(
+          0.2, "cm"
+        ),
+        legend.text.align = 0,
+        legend.key.width = unit(
+          0.2, "cm"
+        ),
+        legend.title = element_text(
+          size = 6
+        ),
+        legend.margin = margin(
+          l = -5,
+          t = -5,
+          b = -5,
+          r = -5
+        )
+      )
   }
 
 
