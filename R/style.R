@@ -36,6 +36,9 @@ style <- theme_bw() +
     ),
     strip.background = element_rect(
       fill = "white"
+    ),
+    strip.text = element_text(
+      size = fontSizeMin
     )
   )
 #dark?
@@ -234,7 +237,7 @@ dotGraph <- function(
       annotate(
         "text",
         label = glue(
-          "P = ",
+          # "P ",
           {
 
             varResult <- ..varData %>%
@@ -275,15 +278,18 @@ dotGraph <- function(
             ifelse(
               showP >
                 cutoff,
-              "> 0.10",
+              "",
               ifelse(
                 showP < cutoff &
                   showP > 0.001,
-                round(
-                  showP,
-                  3
+                glue(
+                  "P = ",
+                    round(
+                      showP,
+                      3
+                    )
                 ),
-                "< 0.001"
+                "P < 0.001"
               )
             )
           }
@@ -373,10 +379,18 @@ dotGraph <- function(
     graph <- graph +
 
       scale_y_continuous(
-        trans = "log10"
+        trans = "log10",
+        labels = trans_format(
+          "log10",
+          math_format()
+        )
       ) +
       scale_x_continuous(
-        trans = "log10"
+        trans = "log10",
+        labels = trans_format(
+          "log10",
+          math_format()
+        )
       )
 
   } else {
@@ -427,7 +441,7 @@ dotGraph <- function(
       stat_smooth(
         # formula = curve,
         se = F,
-        # color = "black",
+        color = "black",
         size = 0.5,
         method = "lm",
         # parse = T

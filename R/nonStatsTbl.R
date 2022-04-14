@@ -393,7 +393,7 @@ addStatFitNonNP <- function(
   ...statEvalTbl %>%
 
     mutate(
-      statTestNP =
+      "statTestNP" =
         varData %>%
         modify_if(
 
@@ -402,11 +402,24 @@ addStatFitNonNP <- function(
               isModelOK
             ),
 
-          ~ .x %>%
+          ~ na.omit(
+            .x
+          ) %>%
+            as.data.frame() %>%
+            as.matrix.data.frame() %>%
             kruskal_test(
               ....formula
-            )
+            ),
+
+          ~ NA
         ) %>%
-        summary()
-    )
+        summary(),
+      "NPp" = statTestNP %>%
+        pull(
+          p
+        )
+    ) #%>%
+    # unnest(
+    #   NPp
+    # )
 }

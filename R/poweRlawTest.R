@@ -1,3 +1,4 @@
+#steup----
 library(here)
 i_am(
   "R/poweRLawTest.R"
@@ -25,6 +26,7 @@ CheckPoweRlaw <- function(
   RealFreq,
   xMin = NULL,
   #poweRlaw::bootstrap()Default
+  #<9999999,>slow5000sec
   xMax = 99999,
   #poweRlaw::bootstrap()Default
   nSims = 100
@@ -34,6 +36,9 @@ CheckPoweRlaw <- function(
 
   tic()
   nCores <- detectCores()
+
+
+  #na.omit()----
 
 
   if(
@@ -108,6 +113,9 @@ CheckPoweRlaw <- function(
 
 
 
+    #power----
+
+
     Pl <- displ$new(
       RealFreq
     )
@@ -125,7 +133,8 @@ CheckPoweRlaw <- function(
       Pl$setXmin(
         #initial
         estimate_xmin(
-          Pl
+          Pl,
+          xmax = xMax
         )
       )
     }
@@ -154,10 +163,15 @@ CheckPoweRlaw <- function(
     PlP <- bootstrap_p(
       Pl,
       # xmins = xMin,
-      # xmax = xMax,
+      xmax = xMax,
       threads = nCores,
       no_of_sims = nSims
     )$p  #>0.1passes
+
+
+
+    #exp----
+
 
 
     Exp <- disexp$new(
@@ -176,7 +190,8 @@ CheckPoweRlaw <- function(
 
       Exp$setXmin(
         estimate_xmin(
-          Exp
+          Exp,
+          xmax = xMax
         )
       )
     }
@@ -198,6 +213,11 @@ CheckPoweRlaw <- function(
     # )
 
 
+
+    #pois----
+
+
+
     Pois <- dispois$new(
       RealFreq
     )
@@ -213,7 +233,8 @@ CheckPoweRlaw <- function(
     } else {
       Pois$setXmin(
         estimate_xmin(
-          Pois
+          Pois,
+          xmax = xMax
         )
       )
     }
@@ -235,6 +256,11 @@ CheckPoweRlaw <- function(
     # )
 
 
+
+    #lognorm----
+
+
+
     Lognorm <- dislnorm$new(
       RealFreq
     )
@@ -251,7 +277,8 @@ CheckPoweRlaw <- function(
 
       Lognorm$setXmin(
         estimate_xmin(
-          Lognorm
+          Lognorm,
+          xmax = xMax
         )
       )
     }
@@ -276,6 +303,10 @@ CheckPoweRlaw <- function(
   #     LognormVar$pars2,
   #     na.rm = T
   #   )
+
+
+
+    #compare----
 
 
 
@@ -308,6 +339,10 @@ CheckPoweRlaw <- function(
 
 
 
+    #org----
+
+
+
     #pivot?==majorBreak!
     results <- data.frame(
       "PlP" = PlP,
@@ -330,6 +365,11 @@ CheckPoweRlaw <- function(
 
     toc()
   }
+
+
+
+  #return----
+
 
 
   return(

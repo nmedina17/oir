@@ -47,6 +47,10 @@ getStatsTbl <- function(
     ) %>%
     addStatEvalNon() %>%
 
+    # addStatFitNonNP(
+    #   ...formula[[2]] ~ ...formula[[3]][[2]]
+    # ) %>%
+
     addGraph(
       ...formula
     )
