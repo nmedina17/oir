@@ -436,23 +436,50 @@ dotGraph <- function(
     ..addLines == T
   ) {
 
-    graph <- graph +
+    ##groups----
+    if(
+      !is_null(..useGroups)
+    ) {
 
-      stat_smooth(
-        # formula = curve,
-        se = F,
-        color = "black",
-        size = 0.5,
-        method = "lm",
-        # parse = T
-      ) +
-      ggpmisc::stat_poly_eq(
-        size = 2,
-        label.x = "right",
-        # label.y = 1.1,
-        label.y = "top",
-        parse = T
-      )
+      graph <- graph +
+
+        stat_smooth(
+          # formula = curve,
+          se = F,
+          # color = "black",
+          size = 0.5,
+          method = "lm",
+          parse = T
+        ) +
+        ggpmisc::stat_poly_eq(
+          size = 2,
+          label.x = "right",
+          # label.y = 1.1,
+          label.y = "top",
+          parse = T
+        )
+
+    } else {
+
+      #base----
+      graph <- graph +
+
+        stat_smooth(
+          # formula = curve,
+          se = F,
+          color = "black",
+          size = 0.5,
+          method = "lm",
+          # parse = T
+        ) +
+        ggpmisc::stat_poly_eq(
+          size = 2,
+          label.x = "right",
+          # label.y = 1.1,
+          label.y = "top",
+          parse = T
+        )
+    }
   } else {
 
     graph

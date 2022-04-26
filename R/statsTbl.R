@@ -1,7 +1,4 @@
-library(here);
-i_am(
-  "R/statsTbl.R"
-)
+library(here); i_am("R/statsTbl.R")
 # source(
 #   here("analysis/stats.R")
 # ) #...$varData
@@ -34,26 +31,17 @@ getStatsTbl <- function(
 
   ...nestedVarDataTbl %>%
 
-    statFitTbl(
-      ...formula
-    ) %>%
-    addStatEval(
-      ...formula
-    ) %>%
+    statFitTbl(...formula) %>%
+    addStatEval(...formula) %>%
 
     #nonnormaldistr
-    addStatFitNon(
-      ...formula
-    ) %>%
+    addStatFitNon(...formula) %>%
     addStatEvalNon() %>%
 
-    # addStatFitNonNP(
-    #   ...formula[[2]] ~ ...formula[[3]][[2]]
-    # ) %>%
+    #nonParametric,experimental
+    addStatFitNonNP(...formula) %>%
 
-    addGraph(
-      ...formula
-    )
+    addGraph(...formula)
 }
 
 

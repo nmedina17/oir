@@ -386,40 +386,24 @@ addStatEvalNon <- function(
 #' @import tidyverse
 #' @examples
 addStatFitNonNP <- function(
-  ...statEvalTbl,
+  ...statEvalNonTbl,
   ....formula
 ) {
 
-  ...statEvalTbl %>%
+  if(length(....formula[[3]]) > 1) {
+    ....formula[[3]] <- ....formula[[3]][[2]]
+  }
+
+
+  ...statEvalNonTbl %>%
 
     mutate(
-      "statTestNP" =
-        varData %>%
-        modify_if(
-
-          !isModelOK &
-            !is.na(
-              isModelOK
-            ),
-
-          ~ na.omit(
-            .x
-          ) %>%
-            as.data.frame() %>%
-            as.matrix.data.frame() %>%
-            kruskal_test(
-              ....formula
-            ),
-
-          ~ NA
-        ) %>%
-        summary(),
+      "statTestNP" = varData %>%
+        modify(~.x %>% na.omit() %>%
+                 as.matrix.data.frame() %>%
+                 #rstatix::kruskal_test()==TooStrict
+                 kruskal.test(formula = ....formula)),
       "NPp" = statTestNP %>%
-        pull(
-          p
-        )
-    ) #%>%
-    # unnest(
-    #   NPp
-    # )
+        modify(~.x %>% na.omit() %>% .$p.value)
+    ) %>% unnest(NPp)
 }
