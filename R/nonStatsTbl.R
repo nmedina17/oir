@@ -400,7 +400,8 @@ addStatFitNonNP <- function(
     mutate(
       "statTestNP" = varData %>%
         modify(~.x %>% na.omit() %>%
-                 as.matrix.data.frame() %>%
+                 #base::QC
+                 select(!where(is.list)) %>%
                  #rstatix::kruskal_test()==TooStrict
                  kruskal.test(formula = ....formula)),
       "NPp" = statTestNP %>%
