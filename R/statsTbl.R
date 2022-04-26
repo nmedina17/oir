@@ -63,6 +63,20 @@ statFitTbl <- function(
   ....formula
 ) {
 
+  #checkLmerForm----
+  ....formulaMod <- ....formula;
+  ....formulaMod[[3]] <- ifelse(
+    #>=3safe...
+    test = length(....formula[[3]]) >= 3,
+    yes = ....formula[[3]][[2]], # +
+           #enterParentheses...
+        # deparse(....formula[[3]][[3]][[2]][[3]]),
+    no = ....formula[[3]]
+  )
+
+
+  #main----
+
   ...nestedVarDataTbl %>%
 
     mutate(
@@ -72,7 +86,7 @@ statFitTbl <- function(
           ~ .x %>%
             lm(
               formula =
-                ....formula
+                ....formulaMod
             )
         ),
       "statPrint" =
@@ -82,8 +96,7 @@ statFitTbl <- function(
             tidy() %>%
             full_join(
               .,
-              .x %>%
-                glance()
+              {.x %>% glance()}
             ) %>%
             filter(
               !is.na(
@@ -126,7 +139,8 @@ addStatEval <- function(
           {
             ....formula[[3]] %>%
               length()
-          } == 1,
+            #<3safer...
+          } < 3,
 
           yes = {
             varData %>%
