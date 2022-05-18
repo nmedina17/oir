@@ -6,6 +6,7 @@ library(tidymodels) #glance()
 library(ggbeeswarm) #quasirandom()
 library(ggpmisc) #stat_poly_eq()
 library(ggpubr) #ggarrange()
+library(rstatix) #shapiro_test()
 # source(
 #   here("analysis/disfit.R")
 # ) #disfit()
@@ -39,7 +40,7 @@ getStatsTbl <- function(
     addStatEvalNon() %>%
 
     #nonParametric,experimental
-    addStatFitNonNP(...formula) %>%
+    # addStatFitNonNP(...formula) %>%
 
     addGraph(...formula)
 }
@@ -65,14 +66,14 @@ statFitTbl <- function(
 
   #checkLmerForm----
   ....formulaMod <- ....formula;
-  ....formulaMod[[3]] <- ifelse(
-    #>=3safe...
-    test = length(....formula[[3]]) >= 3,
-    yes = ....formula[[3]][[2]], # +
-           #enterParentheses...
-        # deparse(....formula[[3]][[3]][[2]][[3]]),
-    no = ....formula[[3]]
-  )
+  # ....formulaMod[[3]] <- ifelse(
+  #   #>=3safe...
+  #   test = length(....formula[[3]]) >= 3,
+  #   yes = ....formula[[3]][[2]], # +
+  #          #enterParentheses...
+  #       # deparse(....formula[[3]][[3]][[2]][[3]]),
+  #   no = ....formula[[3]]
+  # )
 
 
   #main----
@@ -84,9 +85,14 @@ statFitTbl <- function(
         varData %>%
         modify(
           ~ .x %>%
+            na.omit() %>%
             lm(
               formula =
-                ....formulaMod
+                eval(....formulaMod[[2]]) ~
+                eval(....formulaMod[[3]])
+
+              #keepIssuesMoreTransparent
+              # na.action = NULL
             )
         ),
       "statPrint" =

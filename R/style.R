@@ -4,10 +4,7 @@
 library(tidyverse)
 #geom_quasirandom()
 library(ggbeeswarm)
-library(here)
-i_am(
-  "R/style.R"
-)
+library(here); i_am("R/style.R")
 # source(
 #   here(
 #     "analysis/statsTbl.R"
@@ -104,7 +101,8 @@ dotGraph <- function(
     1, 1.1
   ),
   ..addPsize = 2,
-  ..dark = F
+  ..dark = F,
+  ..useFacet = NULL
 ) {
 
   theme_set(
@@ -424,6 +422,11 @@ dotGraph <- function(
         size = 2,
         label.x = "right",
         label.y = 1.1
+        # label = paste(
+        #   after_stat(rr.label),
+        #   after_stat(eq.label),
+        #   sep = "\n"
+        # )
       )
   } else {
 
@@ -456,7 +459,8 @@ dotGraph <- function(
           label.x = "right",
           # label.y = 1.1,
           label.y = "top",
-          parse = T
+          # parse = T
+          coef.digits = 2
         )
 
     } else {
@@ -477,7 +481,8 @@ dotGraph <- function(
           label.x = "right",
           # label.y = 1.1,
           label.y = "top",
-          parse = T
+          # parse = T
+          coef.digits = 2
         )
     }
   } else {
@@ -573,6 +578,17 @@ dotGraph <- function(
         )
       )
   }
+
+
+  #useFacet----
+
+  if(!is_null(..useFacet)) {
+    graph <- graph +
+      facet_wrap(~ eval(..useFacet)) +
+      theme(
+        strip.background = element_rect(size = 2)
+      )
+  } else {graph}
 
 
 }

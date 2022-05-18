@@ -397,14 +397,31 @@ addStatFitNonNP <- function(
 
   ...statEvalNonTbl %>%
 
+    ##kruskal----
     mutate(
       "statTestNP" = varData %>%
-        modify(~.x %>% na.omit() %>%
-                 #base::QC
-                 select(!where(is.list)) %>%
-                 #rstatix::kruskal_test()==TooStrict
-                 kruskal.test(formula = ....formula)),
+        modify(
+          # !isModelOK | is.na(isModelOK) |
+          #   !isSignif,
+          ~.x %>% na.omit() %>%
+            #base::QC
+            select(!where(is.list)) %>%
+            #rstatix::kruskal_test()==TooStrict
+            kruskal.test(formula = ....formula)
+        ),
       "NPp" = statTestNP %>%
-        modify(~.x %>% na.omit() %>% .$p.value)
-    ) %>% unnest(NPp)
+        modify(~{
+          .x %>% na.omit() %>% .$p.value %>% rstatix::p_format();
+          # p <- .x %>% na.omit() %>% .$p.value;
+          #clean
+          # ifelse(p < 0.001, "< 0.001", no = as.character(p))
+        })
+    ) %>% unnest(NPp, keep_empty = T)
+
+    #welchsanova?
+    # mutate(
+    #   # base::onway.test()
+    # )
+
+
 }

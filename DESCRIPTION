@@ -22,7 +22,6 @@ Imports:
     ggpmisc,
     ggpubr,
     glue,
-    goodpractice,
     here,
     lmerTest,
     magrittr,
