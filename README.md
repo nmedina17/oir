@@ -22,7 +22,7 @@ varTbl <- cleanData %>%
 
 then processed using --  
 
-statFormula <- variable ~ [independent variable of interest]  
+statFormula <- value ~ [independent variable of interest]  
 resultsTbl <- varTbl %>% oir::getStatsTbl(formula = statFormula)  
 
 
