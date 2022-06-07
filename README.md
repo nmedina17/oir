@@ -10,7 +10,7 @@ Requires input data tbl to be "nested" into 2 columns --
 
 This can be done with the 2 code lines, acting on typically cleaned "wide" data (i.e. response variables as columns), with dataset's independent variable keys also as columns (e.g. "plot", treatment", etc.) --
 
-# e.g. 
+#e.g. 
 cleanData <- dplyr::tibble(
   "plot" = c(1, 2, 3), "treat" = c(1, 2, 3), 
   "var1" = c(1, 2, 3), "var2" = c(1, 2, 3) #, [...]
