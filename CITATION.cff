@@ -5,6 +5,6 @@ authors:
   given-names: "Nicholas"
   orcid: "https://orcid.org/0000-0001-5465-3988"
 title: "Automating statistical decision trees for data exploration and analysis revision workflow"
-version: 0.9.0
+version: 0.9.1
 date-released: 2022-07-05
 url: "https://github.com/nmedina17/oir"
