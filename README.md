@@ -2,6 +2,7 @@
 Internal package to standardize preliminary data analysis and integrate analytical feedback
 
 Encodes common statistical decision trees, for a list of response variables for a project.
+Cite via Zenodo DOI -- [![DOI](https://zenodo.org/badge/420233162.svg)](https://zenodo.org/badge/latestdoi/420233162)
 
 
 Requires input data tbl to be "nested" into 2 columns --
