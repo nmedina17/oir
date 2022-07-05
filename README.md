@@ -1,5 +1,5 @@
 # oir
-Internal package to standardize preliminary data analysis, including common initial exploratory feedback
+Internal package to standardize preliminary data analysis and integrate analytical feedback
 
 Encodes common statistical decision trees, for a list of response variables for a project.
 
