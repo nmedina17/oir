@@ -40,7 +40,7 @@ getStatsTbl <- function(
     addStatEvalNon() %>%
 
     #nonParametric,experimental
-    # addStatFitNonNP(...formula) %>%
+    addStatFitNonNP(...formula) %>%
 
     addGraph(...formula)
 }
@@ -102,7 +102,7 @@ statFitTbl <- function(
             tidy() %>%
             full_join(
               .,
-              {.x %>% glance()}
+              {.x %>% parsnip::glance()}
             ) %>%
             filter(
               !is.na(
