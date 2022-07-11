@@ -4,7 +4,7 @@ authors:
 - family-names: "Medina"
   given-names: "Nicholas"
   orcid: "https://orcid.org/0000-0001-5465-3988"
-title: "Automating statistical decision trees for data exploration and analysis revision workflow"
+title: "Code for: Automating statistical decision trees for data exploration and analysis revision workflow"
 version: 0.9.1
 doi: 10.5281/zenodo.6800299
 date-released: 2022-07-05
