@@ -1,29 +1,11 @@
-library(
-  here
-)
-i_am(
-  "R/RunFits.R"
-)
+here::i_am("R/RunFits.R")
 #CheckPowerLaw()
-# source(
-#   here(
-#     "scripts/poweRlawTest.R"
-#   )
-# )
-library(
-  poweRlaw
-)
-library(
-  tictoc
-)
+# source(here("scripts/poweRlawTest.R"))
+library(poweRlaw)
+library(tictoc)
 
 #parallel--CheckPowerLaw()
-library(
-  furrr
-)
-library(
-  doParallel
-)
+library(furrr); library(doParallel); library(future)
 
 
 
@@ -37,28 +19,26 @@ library(
 #' @examples
 runFits <- function(
   ...nestedTbl
+  # ...varData = quote(varData)
 ) {
 
   cleanNest <- ...nestedTbl
 
 
-  plan(
-    "multisession"
-  )
+  future::plan("multisession") #inert
 
 
-  cluster1 <- makeCluster(
-    detectCores()
+  cluster1 <- parallel::makeCluster(
+    parallel::detectCores()
   )
-  cluster1 %>%
-    registerDoParallel()
+  cluster1 %>% doParallel::registerDoParallel()
 
 
   tic()
 
   fits <- cleanNest %>%
     mutate(
-      "statFit" = varData %>%
+      "statFit" = varData %>% #eval() %>%
         modify(
           #local
           ~ oir::CheckPoweRlaw(
@@ -75,13 +55,9 @@ runFits <- function(
   toc()
 
 
-  stopCluster(
-    cluster1
-  )
+  parallel::stopCluster(cluster1)
 
 
   #cantWriteCSVnestedTbl
-  return(
-    fits
-  )
+  return(fits)
 }

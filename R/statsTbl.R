@@ -109,8 +109,13 @@ statFitTbl <- function(
                 term
               )
             )
+        ),
+      "statSlope" =
+        statPrint %>%
+        modify(
+          ~ .x$estimate[[2]]
         )
-    )
+    ) %>% unnest(statSlope)
 }
 
 
@@ -281,7 +286,7 @@ addStatEval <- function(
         )
     ) %>%
     unnest(
-      isSignif
+      c(isSignif, pval)
     ) %>%
 
     mutate(

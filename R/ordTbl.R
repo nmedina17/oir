@@ -21,12 +21,12 @@ getOrdVarTbl <- function(
 
 
   #PCA----
-  ord <- rda(
+  ord <- vegan::rda(
     ...commTbl
   )
 
   #xy----
-  ordTbl <- scores(
+  ordTbl <- vegan::scores(
     ord
   )$sites %>%
     as_tibble()
@@ -43,7 +43,7 @@ getOrdVarTbl <- function(
     filter(
       row_number() == 2
     ) %>%
-    round(2)
+    round(4)
     # as.numeric()
 
 
