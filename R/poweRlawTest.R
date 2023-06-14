@@ -210,7 +210,7 @@ CheckPoweRlaw <- function(
     #alsoSlowBelow...
     # poweRlaw::bootstrap_p(poweRlaw::displ$new(99999999:999999999),
     #                       xmins = ((999999999 - 99999999) / ((99999999 + 1))))
-    PlP <- bootstrap_p(
+    PlP <- poweRlaw::bootstrap_p(
       Pl,
       # xmins = seq(
       #   from = xMin, to = xMax
