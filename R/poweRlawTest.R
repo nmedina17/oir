@@ -185,8 +185,8 @@ CheckPoweRlaw <- function(
     distObjs <- makeDistObjs(dataVec = RealFreq, xMin = xMin, xMax = xMax)
 
     ##keepNames----
-    Pl <- distObjs[['Pl']]; Exp <- distObjs[['Exp']];
-    Pois <- distObjs[['Pois']]; Lognorm <- distObjs[['Lognorm']]
+    Pl <- distObjs[[1]]; Exp <- distObjs[[2]];
+    Pois <- distObjs[[3]]; Lognorm <- distObjs[[4]]
 
 
 
