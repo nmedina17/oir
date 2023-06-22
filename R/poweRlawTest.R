@@ -24,7 +24,7 @@ makeDistObjs <- function(dataVec, xMin = NULL, xMax = 999999) {
   #power----
 
 
-  Pl <- poweRlaw::displ$new(dataVec)
+  Pl <- displ$new(dataVec)
 
   if(is.numeric(xMin)) {
     Pl$setXmin(xMin)
